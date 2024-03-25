@@ -15,10 +15,22 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('full_name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->integer('role_id');
+            $table->boolean('verified')->default(false);
+            $table->integer('nik')->unique()->nullable(); //Nomer Induk Kependudukan
+            $table->integer('phone_number')->nullable(); //Nomer Handphone (Yang bisa dihubungi)
+            $table->string('home_address')->nullable(); //Alamat
+            $table->date('date_of_birth')->nullable(); //Tanggal Lahir
+            $table->integer('NA')->nullable(); //Neighborhood Association / RT 
+            $table->integer('RA')->nullable(); //Residential Association / RW
+            $table->string('subdistrict')->nullable(); // Kelurahan / Desa
+            $table->string('distric')->default('Tembalang'); //Kecamatan
+            $table->string('city')->default('Kota Semarang'); //Kota
+            $table->integer('midwife_id')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
