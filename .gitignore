@@ -16,3 +16,5 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/public/assets/tabler/static
+/public/assets/tabler/dist/img
