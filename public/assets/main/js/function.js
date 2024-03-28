@@ -28,3 +28,16 @@ function togglePasswordVisibility(idPassword, idToggle) {
         }
     });
 }
+
+function formatDate(inputDate) {
+    // Memisahkan tanggal, bulan, dan tahun dari inputDate
+    var parts = inputDate.split('-');
+
+    // Membuat objek Date baru dengan tahun, bulan, dan tanggal yang diambil dari inputDate
+    var formattedDate = new Date(parts[2], parts[1] - 1, parts[0]);
+
+    // Mengembalikan tanggal dalam format yang diinginkan (YYYY-MM-DD)
+    return formattedDate.getFullYear() + '-' +
+        ('0' + (formattedDate.getMonth() + 1)).slice(-2) + '-' +
+        ('0' + formattedDate.getDate()).slice(-2);
+}
