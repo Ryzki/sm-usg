@@ -20,14 +20,15 @@ return new class extends Migration
             $table->string('password');
             $table->integer('role_id');
             $table->boolean('verified')->default(false);
-            $table->integer('nik')->unique()->nullable(); //Nomer Induk Kependudukan
-            $table->integer('phone_number')->nullable(); //Nomer Handphone (Yang bisa dihubungi)
-            $table->string('home_address')->nullable(); //Alamat
+            $table->string('nik', 16)->unique()->nullable(); //Nomer Induk Kependudukan
+            $table->string('phone_number', 15)->nullable(); //Nomer Handphone (Yang bisa dihubungi)
+            $table->string('place_of_birth')->nullable(); //Tanggal Lahir
             $table->date('date_of_birth')->nullable(); //Tanggal Lahir
+            $table->string('home_address')->nullable(); //Alamat
             $table->integer('NA')->nullable(); //Neighborhood Association / RT 
             $table->integer('RA')->nullable(); //Residential Association / RW
             $table->string('subdistrict')->nullable(); // Kelurahan / Desa
-            $table->string('distric')->default('Tembalang'); //Kecamatan
+            $table->string('district')->default('Tembalang'); //Kecamatan
             $table->string('city')->default('Kota Semarang'); //Kota
             $table->integer('midwife_id')->nullable();
             $table->timestamp('email_verified_at')->nullable();
