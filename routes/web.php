@@ -17,4 +17,5 @@ Route::middleware('auth')->name('user.')->prefix('/user')->group(function () {
     Route::get('/verified', [DashboardController::class, 'verified'])->name('verified');
     Route::post('/verified', [DashboardController::class, 'verified']);
     Route::post('/get-bidan', [DashboardController::class, 'getBidan'])->name('get-bidan');
+    Route::post('/createPregnantHistory', [DashboardController::class, 'createPregnancyHistory'])->name('create-hpht');
 });

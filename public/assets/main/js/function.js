@@ -41,3 +41,25 @@ function formatDate(inputDate) {
         ('0' + (formattedDate.getMonth() + 1)).slice(-2) + '-' +
         ('0' + formattedDate.getDate()).slice(-2);
 }
+
+function perkiraanTanggalLahir(tanggalHaidTerakhir) {
+    // Memisahkan tanggal, bulan, dan tahun dari string input
+    var tanggalBulanTahun = tanggalHaidTerakhir.split("-");
+    var tanggal = parseInt(tanggalBulanTahun[0]);
+    var bulan = parseInt(tanggalBulanTahun[1]) -
+        1; // Penambahan -1 karena bulan dimulai dari 0 di JavaScript
+    var tahun = parseInt(tanggalBulanTahun[2]);
+
+    // Membuat objek Date dengan tanggal, bulan, dan tahun yang diperoleh
+    var tanggalHaid = new Date(tahun, bulan, tanggal);
+
+    // Menambahkan 280 hari (sekitar 40 minggu) ke tanggal haid
+    tanggalHaid.setDate(tanggalHaid.getDate() + 280);
+
+    // Mengembalikan tanggal perkiraan lahir dalam format yang sesuai
+    var tahunPerkiraan = tanggalHaid.getFullYear();
+    var bulanPerkiraan = ('0' + (tanggalHaid.getMonth() + 1)).slice(-2);
+    var tanggalPerkiraan = ('0' + tanggalHaid.getDate()).slice(-2);
+
+    return tanggalPerkiraan + '-' + bulanPerkiraan + '-' + tahunPerkiraan;
+}

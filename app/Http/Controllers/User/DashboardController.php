@@ -9,13 +9,24 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Models\PregnancyHistory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        return view('app.user.index');
+        $user =  User::with('midwife')->find(Auth::user()->id);
+        $pregnant_history = PregnancyHistory::where('pregnant_mother_id', Auth::user()->id)
+            ->where('status', 1)->latest()->first();
+        if ($pregnant_history) {
+            $countDown = $this->calculateDeliveryCountdown($pregnant_history->estimated_due_date);
+            $pregnantHistoryFormatted = Carbon::createFromFormat('Y-m-d', $pregnant_history->estimated_due_date)
+                ->translatedFormat('d F Y');
+            return view('app.user.index', compact('user', 'pregnantHistoryFormatted', 'countDown'));
+        }
+        return view('app.user.index', compact('user'));
     }
 
     public function verified(Request $request)
@@ -72,7 +83,7 @@ class DashboardController extends Controller
                     'date_of_birth' => Carbon::createFromFormat('d-m-Y', $request->input('date_of_birth'))->format('Y-m-d'),
                     'NA' => $request->input('NA'),
                     'RA' => $request->input('RA'),
-                    'subdisctrict' => $request->input('sub_district'),
+                    'subdistrict' => $request->input('sub_district'),
                     'district' => $request->input('district'),
                     'city' => $request->input('city'),
                     'midwife_id' => $request->input('midwife'),
@@ -119,5 +130,63 @@ class DashboardController extends Controller
             'status' => false,
             'message' => 'Bidan Tidak Tersedia'
         ], 200);
+    }
+
+    public function createPregnancyHistory(Request $request)
+    {
+        $validated = Validator::make($request->only('setHPHT', 'estimatedDue'), [
+            'setHPHT' => 'required',
+            'estimatedDue' => 'required'
+        ], [
+            'setHPHT.required' => 'HPHT wajib diisi',
+            'estimatedDue.required' => 'Hari Perkiraan Lahir wajib diisi'
+        ]);
+
+        if ($validated->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validated->errors()
+            ], 400);
+        }
+
+        $pregnancyHistory = PregnancyHistory::create([
+            'pregnant_mother_id' => $request->input('idUser'),
+            'last_period_date' => Carbon::createFromFormat('d-m-Y', $request->input('setHPHT'))->format('Y-m-d'),
+            'estimated_due_date' => Carbon::createFromFormat('d-m-Y', $request->input('estimatedDue'))->format('Y-m-d'),
+            'status' => 1
+        ]);
+
+        if ($pregnancyHistory) {
+            return response()->json([
+                'status' => true,
+                'message' => 'HPHT berhasil diset'
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'HPHT gagal diset'
+        ], 200);
+    }
+
+    private function calculateDeliveryCountdown($date)
+    {
+        // Date of the expected delivery
+        $deliveryDate = Carbon::createFromFormat('Y-m-d', $date);
+
+        // Current date
+        $currentDate = Carbon::now();
+
+        // Calculating the difference in days between the current date and the delivery date
+        $difference = $deliveryDate->diffInDays($currentDate);
+
+        // Calculating the number of weeks
+        $weeks = floor($difference / 7);
+
+        // Calculating the remaining days after being calculated in weeks
+        $remainingDays = $difference % 7;
+
+        // Returning the result
+        return "$weeks Minggu, $remainingDays Hari";
     }
 }
