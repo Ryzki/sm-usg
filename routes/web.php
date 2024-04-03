@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegistrationController;
+use App\Http\Controllers\User\BloodSupplementController;
 use App\Http\Controllers\User\DashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,4 +19,6 @@ Route::middleware('auth')->name('user.')->prefix('/user')->group(function () {
     Route::post('/verified', [DashboardController::class, 'verified']);
     Route::post('/get-bidan', [DashboardController::class, 'getBidan'])->name('get-bidan');
     Route::post('/createPregnantHistory', [DashboardController::class, 'createPregnancyHistory'])->name('create-hpht');
+
+    Route::resource('/schedule-supplement', BloodSupplementController::class);
 });

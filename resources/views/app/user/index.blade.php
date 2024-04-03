@@ -262,8 +262,8 @@
 @endpush
 
 @push('script')
-    <script src="/assets/main/js/libs/bootstrap-datepicker.min.js"></script>
-    <script src="/assets/main/js/libs/locale/bootstrap-datepicker.id.min.js"></script>
+    <script src="/assets/main/js/libs/datepicker/bootstrap-datepicker.min.js"></script>
+    <script src="/assets/main/js/libs/datepicker/locale/bootstrap-datepicker.id.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
     <script>
         $(document).ready(function() {
