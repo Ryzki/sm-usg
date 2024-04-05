@@ -15,12 +15,13 @@ class BloodSupplementController extends Controller
 
         if ($request->ajax()) {
             $events = BloodSupplement::where('pregnant_mother_id', Auth::user()->id)
-                ->orWhere('start_end', '>=', $request->only('start'))
-                ->orWhere('start_end', '<=', $request->only('end'))
+                ->where('start_end', '>=', $request->only('start'))
+                ->where('start_end', '<=', $request->only('end'))
                 ->get();
 
             return response()->json([
                 'status' => true,
+                'message' => 'Data berhasil diambil',
                 'datas' => $events
             ], 200);
         }
@@ -45,11 +46,13 @@ class BloodSupplementController extends Controller
             ], 400);
         }
 
-        $absence = BloodSupplement::where('start_end', $request->input('date'))
-            ->orWhere('pregnant_mother_id', Auth::user()->id)
+        $isAlreadyAbsent = BloodSupplement::where('start_end', $request->input('date'))
+            ->where(function ($query) {
+                $query->where('pregnant_mother_id', Auth::user()->id);
+            })
             ->exists();
 
-        if ($absence) {
+        if ($isAlreadyAbsent) {
             return response()->json([
                 'status' => false,
                 'message' => 'Anda sudah minum obat hari ini'

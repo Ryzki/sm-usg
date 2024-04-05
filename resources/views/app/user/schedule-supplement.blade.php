@@ -85,8 +85,6 @@
                             end: formateDate(info.endStr)
                         },
                         success: function(response) {
-                            // console.log(response);
-                            // return;
                             // Proses data acara dari respons server
                             var events = response.datas.map(function(event) {
                                 return {
