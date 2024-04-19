@@ -3,7 +3,7 @@
 @section('content')
     <div class="text-center">
         <a href="{{ route('login') }}" class="navbar-brand navbar-brand-autodark">
-            <img src="assets/main/img/logo/semoc_app.svg" alt="" width="300">
+            <img src="{{ asset('assets/main/img/logo/health_care.svg') }}" alt="" width="300">
         </a>
     </div>
     <form class="card card-md" action="#" autocomplete="off" novalidate id="formRegistration">

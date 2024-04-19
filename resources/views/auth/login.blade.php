@@ -5,7 +5,7 @@
 @section('content')
     <div class="text-center">
         <a href="{{ route('login') }}" class="navbar-brand navbar-brand-autodark">
-            <img src="assets/main/img/logo/semoc_app.svg" alt="" width="300">
+            <img src="{{ asset('assets/main/img/logo/health_care.svg') }}" alt="" width="300">
         </a>
     </div>
     <div class="card card-md">
@@ -73,7 +73,7 @@
                     dataType: "JSON",
                     success: function(response) {
                         if (response.status) {
-                            window.location.href = response.data;
+                            window.location.href = response.url;
                         } else {
                             $('#titleLogin').after(`<div class="alert alert-important alert-danger alert-dismissible" role="alert">
                                 <div class="d-flex">

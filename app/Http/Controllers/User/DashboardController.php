@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use App\Models\PregnancyHistory;
+use App\Models\ScheduleANC;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,15 +18,27 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $user =  User::with('midwife')->find(Auth::user()->id);
-        $pregnant_history = PregnancyHistory::where('pregnant_mother_id', Auth::user()->id)
-            ->where('status', 1)->latest()->first();
-        if ($pregnant_history) {
-            $countDown = $this->calculateDeliveryCountdown($pregnant_history->estimated_due_date);
-            $pregnantHistoryFormatted = Carbon::createFromFormat('Y-m-d', $pregnant_history->estimated_due_date)
+        $idUser = Auth::user()->id;
+
+        $user =  User::with('midwife')->find($idUser);
+        $pregnantHistory = PregnancyHistory::where('pregnant_mother_id', $idUser)
+            ->where('status', 1)
+            ->latest()
+            ->first();
+
+        $scheduleUser = ScheduleANC::with(['user', 'visit'])
+            ->where('user_id', $user->id)
+            ->whereDate('schedule_date', now()->toDateString())
+            ->where('status', false)
+            ->first();
+
+        if ($pregnantHistory->exists()) {
+            $countDown = $this->calculateDeliveryCountdown($pregnantHistory->estimated_due_date);
+            $pregnantHistoryFormatted = Carbon::createFromFormat('Y-m-d', $pregnantHistory->estimated_due_date)
                 ->translatedFormat('d F Y');
-            return view('app.user.index', compact('user', 'pregnantHistoryFormatted', 'countDown'));
+            return view('app.user.index', compact('user', 'pregnantHistoryFormatted', 'countDown', 'scheduleUser'));
         }
+
         return view('app.user.index', compact('user'));
     }
 
@@ -101,7 +114,6 @@ class DashboardController extends Controller
                 return redirect()->route('user.dashboard')->with('success', 'Akun anda sudah Terverifikasi. Terima Kasih');
             }
         }
-
         $user = User::findOrFail(Auth::user()->id);
         $subDistricts = SubDistrict::all();
         return view('app.user.verification', compact('user', 'subDistricts'));

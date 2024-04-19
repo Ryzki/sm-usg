@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -34,17 +35,22 @@ class LoginController extends Controller
         ];
 
         if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+            $user = Auth::user();
+            $role = Role::find($user->role_id);
 
-            $url = route('user.dashboard');
-
-            if (!Auth::user()->verified) {
-                $url = route('user.verified');
+            // Periksa apakah akun pengguna belum diverifikasi
+            if (!$user->verified) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Akun Anda belum diverifikasi.',
+                    'url' => route($role->verification_route)
+                ], 200);
             }
 
+            // Alihkan ke rute dashboard yang sesuai dengan peran pengguna
             return response()->json([
                 'status' => true,
-                'data' => $url,
+                'url' => route($role->dashboard_route),
                 'message' => 'Login Berhasil',
             ], 200);
         }

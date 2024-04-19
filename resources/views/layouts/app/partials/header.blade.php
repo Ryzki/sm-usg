@@ -6,8 +6,8 @@
         </button>
         <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
             <a href=".">
-                <img src="/assets/main/img/logo/semoc_app_dashboard.svg" width="110" height="32" alt="Tabler"
-                    class="navbar-brand-image">
+                <img src="{{ asset('assets/main/img/logo/health_care.svg') }}" width="110" height="32"
+                    alt="Tabler" class="navbar-brand-image">
             </a>
         </h1>
         <div class="navbar-nav flex-row order-md-last">
@@ -41,7 +41,7 @@
                     </span>
                     <div class="d-none d-xl-block ps-2">
                         <div>{{ Auth::user()->full_name }}</div>
-                        <div class="mt-1 small text-secondary">Ibu Hamil</div>
+                        <div class="mt-1 small text-secondary">{{ Auth::user()->role->name }}</div>
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
