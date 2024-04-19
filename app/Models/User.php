@@ -28,4 +28,14 @@ class User extends Authenticatable
     {
         return $this->belongsTo(User::class, 'midwife_id')->select('id', 'full_name', 'email', 'phone_number');
     }
+
+    public function scheduleAncs()
+    {
+        return $this->hasMany(ScheduleANC::class);
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
 }
