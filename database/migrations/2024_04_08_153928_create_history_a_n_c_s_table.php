@@ -28,7 +28,7 @@ return new class extends Migration
             $table->float('hemoglobin_level');
             $table->string('usg_img');
             $table->integer('stat_skrining_preklampsia'); //1: Resiko Rendah (Tidak ada Skrining Preklamsia), 2: Resido Sedang (ada 1 History Skrining preklamsia dengan kategori Sedang), 3: Resiko Tinggi (min ada 2 Kategori Preklamsia dengan Resiko Sedang atau 1 Kategori dengan resiko Tinggi)
-            $table->foreignId('history_skrining_preklampsia_code'); //Nanti ini relasikan dengan kolom code_patient di table Patient_preeclamsia_screenings
+            $table->foreignId('history_skrining_preklampsia_code')->nullable(); //Nanti ini relasikan dengan kolom code_patient di table Patient_preeclamsia_screenings
             $table->text('note');
             $table->timestamps();
         });

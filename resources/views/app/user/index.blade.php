@@ -146,7 +146,7 @@
                 </div>
             </div>
             <div class="card p-3 mb-3">
-                <h5 class="card-title fw-bold">INFORMASI KEHAMILAN</h5>
+                <h5 class="card-title fw-bolder">INFORMASI KEHAMILAN</h5>
                 <div class="row">
                     <div class="col">
                         <div class="datagrid-item">
@@ -181,7 +181,98 @@
                         </div>
                     </div>
                 </div>
-
+            </div>
+            <div class="card p-3 mb-3">
+                <h5 class="card-title fw-bolder">KUNJUNGAN ANC</h5>
+                @if (isset($scheduleUser))
+                    <div class="row">
+                        <div class="col-12 mb-2">
+                            <div class="card bg-primary-lt">
+                                <div class="card-body">
+                                    <div class="datagrid-title">
+                                        {{ $scheduleUser->visit->name }}
+                                    </div>
+                                    <div class="datagrid-content mb-3">
+                                        <strong>
+                                            {{ \Carbon\Carbon::parse($scheduleUser->schedule_date)->format('d F Y') }}
+                                        </strong>
+                                    </div>
+                                    <div class="text-right">
+                                        <a class="btn btn-primary" href="">Masuk</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <div class="row">
+                        <div class="col-12 mb-2">
+                            <div class="card bg-muted-lt">
+                                <div class="card-body">
+                                    <div class="datagrid-title">
+                                        Tidak Ada Jadwal Kunjungan
+                                    </div>
+                                    <div class="datagrid-content mb-3">
+                                        <strong>-</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            </div>
+            <div class="card p-3 mb-3">
+                <h5 class="card-title fw-bold">Riwayat Minum TTD</h5>
+                <div class="row mb-2">
+                    <div class="card card-sm">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <span class="bg-primary text-white avatar">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-pill">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M4.5 12.5l8 -8a4.94 4.94 0 0 1 7 7l-8 8a4.94 4.94 0 0 1 -7 -7"></path>
+                                            <path d="M8.5 8.5l7 7"></path>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="col">
+                                    <div class="font-weight-medium">
+                                        30x (Minum Obat Tambah Darah)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="card card-sm">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <span class="bg-danger text-white avatar">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-pill">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M4.5 12.5l8 -8a4.94 4.94 0 0 1 7 7l-8 8a4.94 4.94 0 0 1 -7 -7"></path>
+                                            <path d="M8.5 8.5l7 7"></path>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="col">
+                                    <div class="font-weight-medium">
+                                        5x (Terlewat Minum Obat)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -1,5 +1,7 @@
 @extends('layouts.app.main')
 
+@section('title', 'Jadwal TTD')
+
 @section('content')
     <div class="page-header">
         <div class="container-xl">

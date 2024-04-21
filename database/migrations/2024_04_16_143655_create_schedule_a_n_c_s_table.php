@@ -17,8 +17,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('visit_id');
-            $table->date('schedule_date');
-            $table->boolean('status'); //false: Belum melakukan Pertemuan, true: Sudah melakukan Pertemuan 
+            $table->date('schedule_date')->nullable();
+            //false: Belum melakukan Pertemuan, true: Sudah melakukan Pertemuan 
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }

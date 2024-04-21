@@ -10,11 +10,13 @@ class PreventUnverifiedAccess
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check()) {
+        // Periksa apakah pengguna telah diverifikasi
+        if (Auth::check() && Auth::user()->verified) {
             $role = Auth::user()->role;
-
-            if (!Auth::user()->verified) {
-                return redirect()->route($role->verification_route);
+            $rolePrefix = '/' . $role[0] . '/';
+            // Jika pengguna telah diverifikasi dan mencoba mengakses route 'verified', kembalikan mereka ke halaman dashboard
+            if ($request->route()->named($role->verification_route) || !str_starts_with($request->path(), $rolePrefix)) {
+                return redirect()->route($role->dashboard_route);
             }
         }
 

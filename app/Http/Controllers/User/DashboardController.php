@@ -32,13 +32,12 @@ class DashboardController extends Controller
             ->where('status', false)
             ->first();
 
-        if ($pregnantHistory->exists()) {
+        if ($pregnantHistory) {
             $countDown = $this->calculateDeliveryCountdown($pregnantHistory->estimated_due_date);
             $pregnantHistoryFormatted = Carbon::createFromFormat('Y-m-d', $pregnantHistory->estimated_due_date)
                 ->translatedFormat('d F Y');
             return view('app.user.index', compact('user', 'pregnantHistoryFormatted', 'countDown', 'scheduleUser'));
         }
-
         return view('app.user.index', compact('user'));
     }
 
