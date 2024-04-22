@@ -53,18 +53,23 @@ function perkiraanTanggalLahir(tanggalHaidTerakhir) {
     var tanggalHPL = tanggal + 7;
     // Mengurangi 3 bulan
     var bulanHPL = bulan - 3;
-    // Jika bulan menjadi negatif, kurangkan 1 tahun dan tambahkan 12 bulan
+    // Menambahkan 1 tahun
+    var tahunHPL = tahun + 1;
+
+    // Jika bulan HPL menjadi 0 atau negatif, kurangkan 1 tahun dan tambahkan 12 bulan
     if (bulanHPL <= 0) {
-        tahun--;
+        tahunHPL--;
         bulanHPL += 12;
     }
-    // Menambahkan 1 tahun
-    tahun++;
+
+    // Membuat objek tanggal dengan tanggal, bulan, dan tahun yang diperoleh
+    var tanggalHPLObj = new Date(tahunHPL, bulanHPL - 1, tanggalHPL);
 
     // Mengembalikan tanggal perkiraan lahir dalam format yang sesuai
-    var tahunPerkiraan = tahun;
-    var bulanPerkiraan = ('0' + bulanHPL).slice(-2);
-    var tanggalPerkiraan = ('0' + tanggalHPL).slice(-2);
-
-    return tanggalPerkiraan + '-' + bulanPerkiraan + '-' + tahunPerkiraan;
+    return ('0' + tanggalHPLObj.getDate()).slice(-2) + '-' + ('0' + (tanggalHPLObj.getMonth() + 1)).slice(-2) + '-' + tahunHPL;
 }
+
+
+
+
+
