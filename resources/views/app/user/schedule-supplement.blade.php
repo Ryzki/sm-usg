@@ -18,7 +18,9 @@
         <div class="container-xl">
             <div class="card">
                 <div class="card-body">
-                    @if (!$permissionBloodSupplement)
+                    @if ($permissionBloodSupplement)
+                        <div id="calendar"></div>
+                    @else
                         <div class="alert alert-warning" role="alert">
                             <div class="d-flex">
                                 <div>
@@ -36,14 +38,12 @@
                                 <div>
                                     <h4 class="alert-title">Fitur ini di Non-Aktifkan Sementara</h4>
                                     <div class="text-secondary">
-                                        <p>Fitur akan Aktif ketika <strong>Usia Kandungan < 16 Minggu</strong>
+                                        <p>Fitur akan Aktif ketika <strong>Usia Kandungan > 16 Minggu</strong>
                                         </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    @else
-                        <div id="calendar"></div>
                     @endif
                 </div>
             </div>

@@ -42,10 +42,11 @@ class DashboardController extends Controller
         }
 
         if ($pregnantHistory) {
-            $countDown = $this->calculateDeliveryCountdown($pregnantHistory->estimated_due_date);
+            $gestationalAge = $this->hitungUsiaJanin($pregnantHistory->last_period_date);
+
             $pregnantHistoryFormatted = Carbon::createFromFormat('Y-m-d', $pregnantHistory->estimated_due_date)
                 ->translatedFormat('d F Y');
-            return view('app.user.index', compact('user', 'pregnantHistoryFormatted', 'countDown', 'conditionUser', 'scheduleUser'));
+            return view('app.user.index', compact('user', 'pregnantHistoryFormatted', 'gestationalAge', 'conditionUser', 'scheduleUser'));
         }
 
         return view('app.user.index', compact('user', 'conditionUser', 'scheduleUser'));
@@ -190,24 +191,18 @@ class DashboardController extends Controller
         ], 200);
     }
 
-    private function calculateDeliveryCountdown($date)
+    public function hitungUsiaJanin($hpht)
     {
-        // Date of the expected delivery
-        $deliveryDate = Carbon::createFromFormat('Y-m-d', $date);
+        // Tanggal pertama hari terakhir menstruasi
+        $tanggalHPHT = Carbon::createFromFormat('Y-m-d', $hpht);
 
-        // Current date
-        $currentDate = Carbon::now();
+        // Tanggal saat ini
+        $tanggalSaatIni = Carbon::now();
 
-        // Calculating the difference in days between the current date and the delivery date
-        $difference = $deliveryDate->diffInDays($currentDate);
+        // Hitung selisih dalam minggu dan hari
+        $usiaJaninMinggu = $tanggalHPHT->diffInWeeks($tanggalSaatIni);
+        $usiaJaninHari = $tanggalHPHT->diffInDays($tanggalSaatIni) % 7;
 
-        // Calculating the number of weeks
-        $weeks = floor($difference / 7);
-
-        // Calculating the remaining days after being calculated in weeks
-        $remainingDays = $difference % 7;
-
-        // Returning the result
-        return "$weeks Minggu, $remainingDays Hari";
+        return "$usiaJaninMinggu Minggu, $usiaJaninHari Hari";
     }
 }

@@ -28,7 +28,12 @@ class BloodSupplementController extends Controller
             ], 200);
         }
 
-        $permissionBloodSupplement = $this->checkTTD(Auth::user()->id);
+        $pregnantHistory = PregnancyHistory::where('pregnant_mother_id', Auth::user()->id)
+            ->where('status', 1)
+            ->latest()
+            ->first();
+
+        $permissionBloodSupplement = $this->calculateGestationalAge($pregnantHistory->last_period_date);
 
         return view('app.user.schedule-supplement', compact('permissionBloodSupplement'));
     }
@@ -98,27 +103,14 @@ class BloodSupplementController extends Controller
     {
     }
 
-    public function checkTTD($pregnantMotherId)
+    public function calculateGestationalAge($lastPeriodDate)
     {
-        // Temukan data ibu hamil berdasarkan ID
-        $pregnantMother = PregnancyHistory::find($pregnantMotherId);
+        // Hitung usia kehamilan dari tanggal terakhir haid
+        $lastPeriod = Carbon::createFromFormat('Y-m-d', $lastPeriodDate);
+        $currentDate = Carbon::now();
+        $gestationalAge = $lastPeriod->diffInWeeks($currentDate);
 
-        if (!$pregnantMother) {
-            // Jika data ibu hamil tidak ditemukan, kembalikan pesan error
-            return false;
-        }
-
-        // Hitung usia kehamilan dari tanggal perkiraan lahir (EDD) dan tanggal hari ini
-        $estimatedDueDate = Carbon::parse($pregnantMother->estimated_due_date);
-        $weeksPregnant = Carbon::now()->diffInWeeks($estimatedDueDate);
-
-        // Periksa apakah usia kehamilan kurang dari 16 minggu
-        if ($weeksPregnant < 16) {
-            // Jika kurang dari 16 minggu, berikan rekomendasi minum TTD
-            return true;
-        } else {
-            // Jika tidak kurang dari 16 minggu, berikan pesan bahwa tidak perlu minum TTD
-            return false;
-        }
+        // Kembalikan true jika usia kehamilan lebih dari atau sama dengan 16 minggu, jika tidak kembalikan false
+        return $gestationalAge >= 16;
     }
 }

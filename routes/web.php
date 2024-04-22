@@ -1,12 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\AllowVerifiedAccess;
 use App\Http\Controllers\User\ChatController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Middleware\PreventUnverifiedAccess;
 use App\Http\Controllers\User\CheckAncController;
 use App\Http\Controllers\User\DashboardController;
+use App\Http\Controllers\User\EducationController;
 use App\Http\Controllers\Auth\RegistrationController;
 use App\Http\Controllers\User\BloodSupplementController;
 
@@ -31,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/check-anc/{name_anc}/{schedule_date}', [CheckAncController::class, 'create'])->name('check-anc.create');
         Route::resource('/schedule-supplement', BloodSupplementController::class);
         Route::resource('/chat', ChatController::class);
+        Route::resource('/education', EducationController::class);
     });
 
     Route::name('midwife.')->prefix('/midwife')->group(function () {

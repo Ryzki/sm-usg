@@ -185,9 +185,9 @@
                             <div class="datagrid-title">
                                 Usia Kehamilan saat ini
                             </div>
-                            @if (!empty($countDown))
+                            @if (!empty($gestationalAge))
                                 <div class="datagrid-content">
-                                    <strong>{{ $countDown }}</strong>
+                                    <strong>{{ $gestationalAge }}</strong>
                                 </div>
                             @else
                                 <div class="datagrid-content">
