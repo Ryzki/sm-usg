@@ -89,8 +89,9 @@
                                                 </div>
                                                 <div class="col-auto ">
                                                     <span class="form-help" data-bs-toggle="popover" data-bs-placement="top"
-                                                        data-bs-content="<p></p>" data-bs-html="true">
-                                                        Nomor Handphone wajib yang sudah Terdaftar oleh Aplikasi Whatsapp
+                                                        data-bs-content="<p>Nomor Handphone wajib yang sudah Terdaftar oleh Aplikasi Whatsapp</p>"
+                                                        data-bs-html="true">
+                                                        ?
                                                     </span>
                                                 </div>
                                             </div>
