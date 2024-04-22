@@ -117,26 +117,26 @@
 
                             @if ($conditionUser && $conditionUser->stat_skrining_preklampsia === 1)
                                 <div id="stat-health">
-                                    <span class="status status-warning mt-2 fs-6">
+                                    <span class="status status-success mt-2 fs-6">
                                         <span class="status-dot status-dot-animated"></span>
                                         {{ $conditionUser->stat_skrining_preklampsia_label }}
                                     </span>
                                 </div>
                             @elseif ($conditionUser && $conditionUser->stat_skrining_preklampsia === 2)
                                 <div id="stat-health">
+                                    <span class="status status-warning mt-2 fs-6">
+                                        <span class="status-dot status-dot-animated"></span>
+                                        {{ $conditionUser->stat_skrining_preklampsia_label }}
+                                    </span>
+                                </div>
+                            @elseif ($conditionUser && $conditionUser->stat_skrining_preklampsia === 3)
+                                <div id="stat-health">
                                     <span class="status status-danger mt-2 fs-6">
                                         <span class="status-dot status-dot-animated"></span>
                                         {{ $conditionUser->stat_skrining_preklampsia_label }}
                                     </span>
                                 </div>
-                            @elseif ($conditionUser && $conditionUser->stat_skrining_preklampsia === 0)
-                                <div id="stat-health">
-                                    <span class="status status-success mt-2 fs-6">
-                                        <span class="status-dot status-dot-animated"></span>
-                                        {{ $conditionUser->stat_skrining_preklampsia_label }}
-                                    </span>
-                                </div>
-                            @elseif (empty($conditionUser))
+                            @elseif(empty($conditionUser))
                                 <div id="stat-health">
                                     <span class="status status-success mt-2 fs-6">
                                         <span class="status-dot status-dot-animated"></span>

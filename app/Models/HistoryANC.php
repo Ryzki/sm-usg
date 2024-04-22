@@ -23,13 +23,13 @@ class HistoryANC extends Model
     public function getStatSkriningPreklampsiaLabelAttribute()
     {
         switch ($this->stat_skrining_preklampsia) {
-            case 0:
-                return 'Sehat';
-                break;
             case 1:
                 return 'Resiko Rendah';
                 break;
             case 2:
+                return 'Resiko Sedang';
+                break;
+            case 3:
                 return 'Resiko Tinggi';
                 break;
             default:

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\User;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\BloodSupplement;
+use App\Models\PregnancyHistory;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -26,7 +28,9 @@ class BloodSupplementController extends Controller
             ], 200);
         }
 
-        return view('app.user.schedule-supplement');
+        $permissionBloodSupplement = $this->checkTTD(Auth::user()->id);
+
+        return view('app.user.schedule-supplement', compact('permissionBloodSupplement'));
     }
 
     public function create()
@@ -92,5 +96,29 @@ class BloodSupplementController extends Controller
 
     public function destroy($id)
     {
+    }
+
+    public function checkTTD($pregnantMotherId)
+    {
+        // Temukan data ibu hamil berdasarkan ID
+        $pregnantMother = PregnancyHistory::find($pregnantMotherId);
+
+        if (!$pregnantMother) {
+            // Jika data ibu hamil tidak ditemukan, kembalikan pesan error
+            return false;
+        }
+
+        // Hitung usia kehamilan dari tanggal perkiraan lahir (EDD) dan tanggal hari ini
+        $estimatedDueDate = Carbon::parse($pregnantMother->estimated_due_date);
+        $weeksPregnant = Carbon::now()->diffInWeeks($estimatedDueDate);
+
+        // Periksa apakah usia kehamilan kurang dari 16 minggu
+        if ($weeksPregnant < 16) {
+            // Jika kurang dari 16 minggu, berikan rekomendasi minum TTD
+            return true;
+        } else {
+            // Jika tidak kurang dari 16 minggu, berikan pesan bahwa tidak perlu minum TTD
+            return false;
+        }
     }
 }

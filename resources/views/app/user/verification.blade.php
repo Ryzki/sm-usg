@@ -90,7 +90,7 @@
                                                 <div class="col-auto ">
                                                     <span class="form-help" data-bs-toggle="popover" data-bs-placement="top"
                                                         data-bs-content="<p></p>" data-bs-html="true">
-                                                        ?
+                                                        Nomor Handphone wajib yang sudah Terdaftar oleh Aplikasi Whatsapp
                                                     </span>
                                                 </div>
                                             </div>

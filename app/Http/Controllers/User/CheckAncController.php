@@ -47,7 +47,6 @@ class CheckAncController extends Controller
 
         $categoriesPreeclamsia = PreeclampsiaScreening::get();
 
-        // return response()->json($checkVisit);
         if (!empty($checkVisit)) {
             return view('app.user.anc.create', compact('checkVisit', 'categoriesPreeclamsia'));
         }
@@ -62,12 +61,15 @@ class CheckAncController extends Controller
             'schedule_date' => 'required',
             'age' => 'required',
             'gestational_age' => 'required',
-            'weight' => 'required',
-            'height' => 'required',
-            'lila' => 'required',
+            'weight' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'height' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'lila' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'sistolik_diastolik' => 'required',
+            // 'diastolik' => 'required',
             'hemoglobin_level' => 'required',
-            'usg_image' => 'required|image|mimes:jpg,jpeg,png|max:3048',
+            'tetanus_toxoid' => 'required|in:0,1',
+            'position' => 'required|in:1,2,3,4',
+            'usg_image' => 'image|mimes:jpg,jpeg,png|max:2048',
             'note' => 'max:200'
         ]);
 
@@ -77,7 +79,6 @@ class CheckAncController extends Controller
         if ($request->input('visit_id') && $request->input('schedule_id')) {
             $idVisit = $request->input('visit_id');
             $idSchedule = $request->input('schedule_id');
-            $sistolik_diastolik = explode('/', $request->input('sistolik_diastolik'));
 
             $dataHistoryAnc = [
                 'user_id' => Auth::user()->id,
@@ -88,22 +89,31 @@ class CheckAncController extends Controller
                 'weight' => $request->input('weight'),
                 'height' => $request->input('height'),
                 'lila' => $request->input('lila'),
-                'sistolik' => $sistolik_diastolik[0],
-                'diastolik' => $sistolik_diastolik[1],
+                'sistolik' => $request->input('sistolik'),
+                'diastolik' => $request->input('diastolik'),
                 'hemoglobin_level' => $request->input('hemoglobin_level'),
-                'note' => $request->input('note')
+                'tetanus_toxoid' => $request->input('tetanus_toxoid'),
+                'fetal_position' => $request->input('fetal_position'),
+                'fetal_heartbeat' => $request->input('fetal_heartbeat'),
+                'note' => $request->input('note'),
+                'stat_risk_pregnancy_of_ced' => $request->input('lila') < 23.5,
+                'stat_risk_preeclampsia' => $request->input('sistolik') > 140 || $request->input('diastolik') > 90,
+                'stat_risk_anemia' => $request->input('hemoglobin_level') < 11,
             ];
 
             // DB::beginTransaction();
-
-            $request->file('usg_image')->storeAs('public/usg', $nameImage);
-            $dataHistoryAnc['usg_img'] = $nameImage;
+            if ($request->file('usg_image')) {
+                $request->file('usg_image')->storeAs('public/usg', $nameImage);
+                $dataHistoryAnc['usg_img'] = $nameImage;
+            } else {
+                $dataHistoryAnc['usg_img'] = null;
+            }
 
             $selectedCategories = $request->input('category_preeclamsia');
 
             if (empty($selectedCategories)) {
                 $dataHistoryAnc['history_skrining_preklampsia_code'] = null;
-                $dataHistoryAnc['stat_skrining_preklampsia'] = 0;
+                $dataHistoryAnc['stat_skrining_preklampsia'] = 1;
             } else {
                 $codeUnique = Str::random(5);
                 foreach ($selectedCategories as $value) {
