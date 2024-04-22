@@ -501,12 +501,19 @@
                     bulanHPL += 12;
                 }
 
-                // Membuat objek tanggal dengan tanggal, bulan, dan tahun yang diperoleh
-                var tanggalHPLObj = new Date(tahunHPL, bulanHPL - 1, tanggalHPL);
+                // Jika tanggal HPL lebih dari jumlah hari dalam bulan yang dipilih, atur tanggal dan bulan yang sesuai
+                var maxTanggal = new Date(tahunHPL, bulanHPL, 0).getDate();
+                if (tanggalHPL > maxTanggal) {
+                    tanggalHPL -= maxTanggal;
+                    bulanHPL++;
+                    if (bulanHPL > 12) {
+                        bulanHPL = 1;
+                        tahunHPL++;
+                    }
+                }
 
                 // Mengembalikan tanggal perkiraan lahir dalam format yang sesuai
-                return ('0' + tanggalHPLObj.getDate()).slice(-2) + '-' + ('0' + (tanggalHPLObj
-                    .getMonth() + 1)).slice(-2) + '-' + tahunHPL;
+                return ('0' + tanggalHPL).slice(-2) + '-' + ('0' + bulanHPL).slice(-2) + '-' + tahunHPL;
             }
         });
     </script>
