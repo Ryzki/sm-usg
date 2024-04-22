@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\User;
 
+use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Visit;
+use App\Models\HistoryANC;
 use App\Models\MidwifeArea;
+use App\Models\ScheduleANC;
 use App\Models\SubDistrict;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
 use App\Models\PregnancyHistory;
-use App\Models\ScheduleANC;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -26,19 +28,27 @@ class DashboardController extends Controller
             ->latest()
             ->first();
 
-        $scheduleUser = ScheduleANC::with(['user', 'visit'])
+        $scheduleUser = ScheduleANC::with(['visit'])
             ->where('user_id', $user->id)
             ->whereDate('schedule_date', now()->toDateString())
-            ->where('status', false)
             ->first();
+
+        $conditionUser = HistoryANC::where('user_id', $user->id)
+            ->latest()
+            ->first();
+
+        if (empty($conditionUser)) {
+            $conditionUser = 0;
+        }
 
         if ($pregnantHistory) {
             $countDown = $this->calculateDeliveryCountdown($pregnantHistory->estimated_due_date);
             $pregnantHistoryFormatted = Carbon::createFromFormat('Y-m-d', $pregnantHistory->estimated_due_date)
                 ->translatedFormat('d F Y');
-            return view('app.user.index', compact('user', 'pregnantHistoryFormatted', 'countDown', 'scheduleUser'));
+            return view('app.user.index', compact('user', 'pregnantHistoryFormatted', 'countDown', 'conditionUser', 'scheduleUser'));
         }
-        return view('app.user.index', compact('user'));
+
+        return view('app.user.index', compact('user', 'conditionUser', 'scheduleUser'));
     }
 
     public function verified(Request $request)

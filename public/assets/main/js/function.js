@@ -46,20 +46,25 @@ function perkiraanTanggalLahir(tanggalHaidTerakhir) {
     // Memisahkan tanggal, bulan, dan tahun dari string input
     var tanggalBulanTahun = tanggalHaidTerakhir.split("-");
     var tanggal = parseInt(tanggalBulanTahun[0]);
-    var bulan = parseInt(tanggalBulanTahun[1]) -
-        1; // Penambahan -1 karena bulan dimulai dari 0 di JavaScript
+    var bulan = parseInt(tanggalBulanTahun[1]);
     var tahun = parseInt(tanggalBulanTahun[2]);
 
-    // Membuat objek Date dengan tanggal, bulan, dan tahun yang diperoleh
-    var tanggalHaid = new Date(tahun, bulan, tanggal);
-
-    // Menambahkan 280 hari (sekitar 40 minggu) ke tanggal haid
-    tanggalHaid.setDate(tanggalHaid.getDate() + 280);
+    // Menambahkan 7 hari
+    var tanggalHPL = tanggal + 7;
+    // Mengurangi 3 bulan
+    var bulanHPL = bulan - 3;
+    // Jika bulan menjadi negatif, kurangkan 1 tahun dan tambahkan 12 bulan
+    if (bulanHPL <= 0) {
+        tahun--;
+        bulanHPL += 12;
+    }
+    // Menambahkan 1 tahun
+    tahun++;
 
     // Mengembalikan tanggal perkiraan lahir dalam format yang sesuai
-    var tahunPerkiraan = tanggalHaid.getFullYear();
-    var bulanPerkiraan = ('0' + (tanggalHaid.getMonth() + 1)).slice(-2);
-    var tanggalPerkiraan = ('0' + tanggalHaid.getDate()).slice(-2);
+    var tahunPerkiraan = tahun;
+    var bulanPerkiraan = ('0' + bulanHPL).slice(-2);
+    var tanggalPerkiraan = ('0' + tanggalHPL).slice(-2);
 
     return tanggalPerkiraan + '-' + bulanPerkiraan + '-' + tahunPerkiraan;
 }

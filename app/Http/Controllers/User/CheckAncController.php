@@ -4,17 +4,19 @@ namespace App\Http\Controllers\User;
 
 use Carbon\Carbon;
 use App\Models\Visit;
+use App\Models\HistoryANC;
 use App\Models\ScheduleANC;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\HistoryANC;
-use App\Models\PatientPreeclamsiaScreenings;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PreeclampsiaScreening;
 use Illuminate\Support\Facades\Validator;
+use App\Models\PatientPreeclamsiaScreenings;
+use Illuminate\Support\Facades\Storage;
 
 class CheckAncController extends Controller
 {
@@ -27,7 +29,7 @@ class CheckAncController extends Controller
             }])
             ->get();
 
-        return view('app.user.anc-visit', compact('visits'));
+        return view('app.user.anc.index', compact('visits'));
     }
 
     public function create($name_anc, $schedule_date)
@@ -47,7 +49,7 @@ class CheckAncController extends Controller
 
         // return response()->json($checkVisit);
         if (!empty($checkVisit)) {
-            return view('app.user.create-anc-visit', compact('checkVisit', 'categoriesPreeclamsia'));
+            return view('app.user.anc.create', compact('checkVisit', 'categoriesPreeclamsia'));
         }
 
         return redirect()->route('user.check-anc.index')->with('message', 'Terdapat kesalahan!! Tolong masuk kembali');
@@ -55,9 +57,7 @@ class CheckAncController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
-
-        $validated = $request->validate([
+        $request->validate([
             'visit_abbreviation' => 'required',
             'schedule_date' => 'required',
             'age' => 'required',
@@ -67,10 +67,12 @@ class CheckAncController extends Controller
             'lila' => 'required',
             'sistolik_diastolik' => 'required',
             'hemoglobin_level' => 'required',
-            'category_preeclamsia' => Rule::in(PreeclampsiaScreening::pluck('id')->toArray()),
             'usg_image' => 'required|image|mimes:jpg,jpeg,png|max:3048',
             'note' => 'max:200'
         ]);
+
+        // try {
+        $nameImage = Str::random(30) . '.' . $request->file('usg_image')->getClientOriginalExtension();
 
         if ($request->input('visit_id') && $request->input('schedule_id')) {
             $idVisit = $request->input('visit_id');
@@ -92,34 +94,35 @@ class CheckAncController extends Controller
                 'note' => $request->input('note')
             ];
 
-            if ($request->file('usg_image')) {
-                $nameImage = Str::random(30) . '.' . $request->file('usg_image')->getClientOriginalExtension();
-                $request->file('usg_image')->storeAs('public/usg', $nameImage);
+            // DB::beginTransaction();
 
-                $dataHistoryAnc['usg_img'] = $nameImage;
-            }
+            $request->file('usg_image')->storeAs('public/usg', $nameImage);
+            $dataHistoryAnc['usg_img'] = $nameImage;
 
-            if (!empty($request->input('category_preeclamsia'))) {
+            $selectedCategories = $request->input('category_preeclamsia');
+
+            if (empty($selectedCategories)) {
+                $dataHistoryAnc['history_skrining_preklampsia_code'] = null;
+                $dataHistoryAnc['stat_skrining_preklampsia'] = 0;
+            } else {
                 $codeUnique = Str::random(5);
-
-                foreach ($request->input('category_preeclamsia') as $value) {
-                    PatientPreeclamsiaScreenings::create([
+                foreach ($selectedCategories as $value) {
+                    $data = [
                         'code_history' => $codeUnique,
                         'preeclampsia_screenings_id' => $value
-                    ]);
+                    ];
+
+                    PatientPreeclamsiaScreenings::create($data);
                 }
 
                 $dataHistoryAnc['history_skrining_preklampsia_code'] = $codeUnique;
-                $dataHistoryAnc['stat_skrining_preklampsia'] = $this->statPreeclamsia($request->input('category_preeclamsia'));
-            } else {
-                $dataHistoryAnc['history_skrining_preklampsia_code'] = null;
-                $dataHistoryAnc['stat_skrining_preklampsia'] = 0;
+                $dataHistoryAnc['stat_skrining_preklampsia'] = $this->statPreeclamsia($selectedCategories);
             }
-
-            // dd($dataHistoryAnc);
 
             $historyAnc = HistoryANC::create($dataHistoryAnc);
             $scheduleANC  = ScheduleANC::find($idSchedule);
+
+            // DB::commit();
 
             if ($historyAnc && $scheduleANC) {
                 $scheduleANC->update([
@@ -131,18 +134,22 @@ class CheckAncController extends Controller
                 return redirect()->route('user.check-anc.index')->with('message', 'Data Gagal tersimpan');
             }
         }
+        // } catch (\Exception $e) {
+        //     DB::rollback();
+        //     Storage::delete('public/usg' . $nameImage);
 
-        return redirect()->route('user.check-anc.index')->with('message', 'Data Gagal tersimpan');
+        //     return redirect()->route('user.check-anc.index')->with('message', 'Terjadi Kesalahan pada Sistem');
+        // }
     }
 
     public function show($id)
     {
+        return view('app.user.anc.show');
     }
 
     public function edit($id)
     {
     }
-
 
     public function update(Request $request, $id)
     {

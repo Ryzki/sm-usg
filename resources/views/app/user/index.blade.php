@@ -96,31 +96,63 @@
                                 </a>
                             </div>
                         @endif
+                        <div class="d-flex align-items-center" id="status-pengguna">
+                            @if ($user->verified)
+                                <!-- Jika Sudah verifikasi -->
+                                <div id="status">
+                                    <span class="status status-success mt-2 fs-6">
+                                        <span class="status-dot status-dot-animated"></span>
+                                        Verifikasi
+                                    </span>
+                                </div>
+                            @else
+                                <div id="status">
+                                    <!-- Jika Belum verifikasi -->
+                                    <span class="status status-danger mt-2 fs-6">
+                                        <span class="status-dot status-dot-animated"></span>
+                                        Belum Terverifikasi
+                                    </span>
+                                </div>
+                            @endif
 
-                        @if ($user->verified)
-                            <!-- Jika Sudah verifikasi -->
-                            <div id="status">
-                                <span class="status status-success mt-2 fs-6">
-                                    <span class="status-dot status-dot-animated"></span>
-                                    Verifikasi
-                                </span>
-                            </div>
-                        @else
-                            <div id="status">
-                                <!-- Jika Belum verifikasi -->
-                                <span class="status status-danger mt-2 fs-6">
-                                    <span class="status-dot status-dot-animated"></span>
-                                    Belum Terverifikasi
-                                </span>
-                            </div>
-                        @endif
+                            @if ($conditionUser && $conditionUser->stat_skrining_preklampsia === 1)
+                                <div id="stat-health">
+                                    <span class="status status-warning mt-2 fs-6">
+                                        <span class="status-dot status-dot-animated"></span>
+                                        {{ $conditionUser->stat_skrining_preklampsia_label }}
+                                    </span>
+                                </div>
+                            @elseif ($conditionUser && $conditionUser->stat_skrining_preklampsia === 2)
+                                <div id="stat-health">
+                                    <span class="status status-danger mt-2 fs-6">
+                                        <span class="status-dot status-dot-animated"></span>
+                                        {{ $conditionUser->stat_skrining_preklampsia_label }}
+                                    </span>
+                                </div>
+                            @elseif ($conditionUser && $conditionUser->stat_skrining_preklampsia === 0)
+                                <div id="stat-health">
+                                    <span class="status status-success mt-2 fs-6">
+                                        <span class="status-dot status-dot-animated"></span>
+                                        {{ $conditionUser->stat_skrining_preklampsia_label }}
+                                    </span>
+                                </div>
+                            @elseif (empty($conditionUser))
+                                <div id="stat-health">
+                                    <span class="status status-success mt-2 fs-6">
+                                        <span class="status-dot status-dot-animated"></span>
+                                        Sehat
+                                    </span>
+                                </div>
+                            @endif
+                        </div>
                     </div>
                     <div class="col-auto">
                         <!-- Jika sudah ada Dokternya atau sudah verifikasi muncul tanda chat ini -->
                         <a href="#" class="btn btn-outline-blue d-none d-sm-inline-block">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user-scan">
+                                stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-user-scan">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                 <path d="M10 9a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
                                 <path d="M4 8v-2a2 2 0 0 1 2 -2h2" />
@@ -187,7 +219,7 @@
                 @if (isset($scheduleUser))
                     <div class="row">
                         <div class="col-12 mb-2">
-                            <div class="card bg-primary-lt">
+                            <div class="card {{ $scheduleUser->status == 0 ? 'bg-primary-lt' : 'bg-success-lt' }}">
                                 <div class="card-body">
                                     <div class="datagrid-title">
                                         {{ $scheduleUser->visit->name }}
@@ -198,7 +230,16 @@
                                         </strong>
                                     </div>
                                     <div class="text-right">
-                                        <a class="btn btn-primary" href="">Masuk</a>
+                                        @if ($scheduleUser->status == 0)
+                                            <a class="btn btn-primary"
+                                                href="{{ route('user.check-anc.create', ['name_anc' => $scheduleUser->visit->abbreviation, 'schedule_date' => $scheduleUser->schedule_date->format('d-m-Y')]) }}">
+                                                Masuk
+                                            </a>
+                                        @elseif($scheduleUser->status == 1)
+                                            <a class="btn btn-success" href="">
+                                                Detail
+                                            </a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -276,7 +317,6 @@
             </div>
         </div>
     </div>
-
     <div class="modal modal-blur fade" id="modal-hpht">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -326,8 +366,8 @@
                         </span>
                     </div>
                     <span class="form-hint">
-                        * Sistem otomatis mengisi <strong>Perkiraan Lahir</strong>. Anda juga bisa mengubahnya sesuai
-                        dengan saran tenaga kesehatan.
+                        * Sistem otomatis mengisi <strong>Perkiraan Lahir</strong> referensi perhitungan dari <strong>Rumus
+                            Neagele</strong>.Anda juga bisa mengubahnya sesuai dengan saran tenaga kesehatan.
                     </span>
                 </div>
                 <div class="modal-footer">

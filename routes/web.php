@@ -26,7 +26,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/get-bidan', [DashboardController::class, 'getBidan'])->name('get-bidan');
 
         Route::post('/createPregnantHistory', [DashboardController::class, 'createPregnancyHistory'])->name('create-hpht');
-        Route::resource('/check-anc', CheckAncController::class);
+        Route::resource('/check-anc', CheckAncController::class)->except('create');
         Route::get('/check-anc/{name_anc}/{schedule_date}', [CheckAncController::class, 'create'])->name('check-anc.create');
         Route::resource('/schedule-supplement', BloodSupplementController::class);
     });

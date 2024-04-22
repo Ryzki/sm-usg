@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('patient_preeclampsia_screenings', function (Blueprint $table) {
             $table->id();
-            $table->string('code_history', 10)->unique();
+            $table->string('code_history', 10);
             $table->foreignId('preeclampsia_screenings_id');
             $table->timestamps();
         });

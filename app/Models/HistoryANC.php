@@ -19,4 +19,21 @@ class HistoryANC extends Model
     {
         return $this->hasMany(PatientPreeclamsiaScreenings::class, 'history_skrining_preklampsia_code', 'code_history');
     }
+
+    public function getStatSkriningPreklampsiaLabelAttribute()
+    {
+        switch ($this->stat_skrining_preklampsia) {
+            case 0:
+                return 'Sehat';
+                break;
+            case 1:
+                return 'Resiko Rendah';
+                break;
+            case 2:
+                return 'Resiko Tinggi';
+                break;
+            default:
+                return '';
+        }
+    }
 }

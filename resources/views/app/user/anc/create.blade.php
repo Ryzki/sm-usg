@@ -84,15 +84,60 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Tekanan Darah</label>
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" name="sistolik_diastolik"
-                                        id="sistolik_diastolik" placeholder="140/90">
-                                    <span class="input-group-text">mmHg</span>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Sistolik">
+                                    <span class="input-group-text">
+                                        /
+                                    </span>
+                                    <input type="text" class="form-control" placeholder="Diastolik">
+                                    <span class="input-group-text">
+                                        mmHg
+                                    </span>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Kadar HB</label>
-                                <input type="text" class="form-control" name="hemoglobin_level" id="hemoglobin_level">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="hemoglobin_level"
+                                        id="hemoglobin_level">
+                                    <span class="input-group-text">
+                                        mg/dl
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-label">Tetanus Toxoid (TT)</div>
+                                <div>
+                                    <label class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="radios-inline"
+                                            value="1">
+                                        <span class="form-check-label">Sudah</span>
+                                    </label>
+                                    <label class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="radios-inline"
+                                            value="0">
+                                        <span class="form-check-label">Belum</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-label">
+                                    Letak Janin
+                                </div>
+                                <select class="form-select" id="position" name="position-">
+                                    <option value="0" selected>Pilih Posisi Janin</option>
+                                    <option value="1">Posisi Kepala Di Bawah</option>
+                                    <option value="2">Posisi Posterior</option>
+                                    <option value="3">Posisi Melintang</option>
+                                    <option value="4">Posisi Sungsang</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-label">Detak Jantung Janin (DJJ)</div>
+                                <div>
+                                    <input type="text" class="form-control" name="fetal-heartbeat"
+                                        id="fetal-heartbeat">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -114,7 +159,7 @@
                     </div>
                     <div class="card mb-2" id="preklamsia-screening">
                         <div class="card-header">
-                            <h3 class="card-title">Skrining Preeklampsia</h3>
+                            <h3 class="card-title">Faktor Resiko Preklamsia</h3>
                         </div>
                         <div class="card-body">
                             <div class="mb-3">

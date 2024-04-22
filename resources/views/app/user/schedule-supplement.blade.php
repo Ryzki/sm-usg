@@ -36,8 +36,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-link link-secondary text-decoration-none me-auto"
                         data-bs-dismiss="modal" id="btnCancel">Belum</button>
-                    <button type="button" class="btn btn-success" id="btnConfirm" data-bs-dismiss="modal">Ya,
-                        sudah</button>
+                    <button type="button" class="btn btn-success" id="btnConfirm" data-bs-dismiss="modal">Sudah</button>
                 </div>
             </div>
         </div>
@@ -70,7 +69,7 @@
                 },
                 customButtons: {
                     btnAbsen: {
-                        text: 'Absen',
+                        text: 'Yuk Minum',
                         click: function(start) {
                             $('#modalAbsen').modal('show');
                         }
