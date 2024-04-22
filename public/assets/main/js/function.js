@@ -43,32 +43,7 @@ function formatDate(inputDate) {
 }
 
 
-function perkiraanTanggalLahir(tanggalHaidTerakhir) {
-    // Memisahkan tanggal, bulan, dan tahun dari string input
-    var tanggalBulanTahun = tanggalHaidTerakhir.split("-");
-    var tanggal = parseInt(tanggalBulanTahun[0]);
-    var bulan = parseInt(tanggalBulanTahun[1]);
-    var tahun = parseInt(tanggalBulanTahun[2]);
 
-    // Menambahkan 7 hari
-    var tanggalHPL = tanggal + 7;
-    // Mengurangi 3 bulan
-    var bulanHPL = bulan - 3;
-    // Menambahkan 1 tahun
-    var tahunHPL = tahun + 1;
-
-    // Jika bulan HPL menjadi 0 atau negatif, kurangkan 1 tahun dan tambahkan 12 bulan
-    if (bulanHPL <= 0) {
-        tahunHPL--;
-        bulanHPL += 12;
-    }
-
-    // Membuat objek tanggal dengan tanggal, bulan, dan tahun yang diperoleh
-    var tanggalHPLObj = new Date(tahunHPL, bulanHPL - 1, tanggalHPL);
-
-    // Mengembalikan tanggal perkiraan lahir dalam format yang sesuai
-    return ('0' + tanggalHPLObj.getDate()).slice(-2) + '-' + ('0' + (tanggalHPLObj.getMonth() + 1)).slice(-2) + '-' + tahunHPL;
-}
 
 
 
