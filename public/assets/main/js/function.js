@@ -42,6 +42,7 @@ function formatDate(inputDate) {
         ('0' + formattedDate.getDate()).slice(-2);
 }
 
+
 function perkiraanTanggalLahir(tanggalHaidTerakhir) {
     // Memisahkan tanggal, bulan, dan tahun dari string input
     var tanggalBulanTahun = tanggalHaidTerakhir.split("-");
