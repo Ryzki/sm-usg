@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AllowVerifiedAccess;
+use App\Http\Controllers\User\ChatController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Middleware\PreventUnverifiedAccess;
 use App\Http\Controllers\User\CheckAncController;
@@ -29,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('/check-anc', CheckAncController::class)->except('create');
         Route::get('/check-anc/{name_anc}/{schedule_date}', [CheckAncController::class, 'create'])->name('check-anc.create');
         Route::resource('/schedule-supplement', BloodSupplementController::class);
+        Route::resource('/chat', ChatController::class);
     });
 
     Route::name('midwife.')->prefix('/midwife')->group(function () {
