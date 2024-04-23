@@ -9,12 +9,13 @@ use App\Models\ScheduleANC;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PreeclampsiaScreening;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Models\PatientPreeclamsiaScreenings;
-use Illuminate\Support\Facades\Storage;
 
 class CheckAncController extends Controller
 {
@@ -94,85 +95,85 @@ class CheckAncController extends Controller
             'note.max' => 'Catatan tidak boleh melebihi 1000 karakter.'
         ]);
 
-        // try {
-        if ($request->file('usg_image')) {
-            $nameImage = Str::random(30) . '.' . $request->file('usg_image')->getClientOriginalExtension();
-        }
-
-        if ($request->input('visit_id') && $request->input('schedule_id')) {
-            $idVisit = $request->input('visit_id');
-            $idSchedule = $request->input('schedule_id');
-
-            $dataHistoryAnc = [
-                'user_id' => Auth::user()->id,
-                'visit_id' => $idVisit,
-                'inspection_date' => Carbon::parse($request->input('schedule_date'))->format('Y-m-d'),
-                'age' => $request->input('age'),
-                'gestational_age' => $request->input('gestational_age'),
-                'weight' => $request->input('weight'),
-                'height' => $request->input('height'),
-                'lila' => $request->input('lila'),
-                'sistolik' => $request->input('sistolik'),
-                'diastolik' => $request->input('diastolik'),
-                'hemoglobin_level' => $request->input('hemoglobin_level'),
-                'tetanus_toxoid' => $request->input('tetanus_toxoid'),
-                'fetal_position' => $request->input('fetal_position'),
-                'fetal_heartbeat' => $request->input('fetal_heartbeat'),
-                'note' => $request->input('note'),
-                'stat_risk_pregnancy_of_ced' => $request->input('lila') < 23.5,
-                'stat_risk_preeclamsia' => $request->input('sistolik') > 140 || $request->input('diastolik') > 90,
-                'stat_risk_anemia' => $request->input('hemoglobin_level') < 11,
-            ];
-
-            // DB::beginTransaction();
+        try {
             if ($request->file('usg_image')) {
-                $request->file('usg_image')->storeAs('public/usg', $nameImage);
-                $dataHistoryAnc['usg_img'] = $nameImage;
-            } else {
-                $dataHistoryAnc['usg_img'] = null;
+                $nameImage = Str::random(30) . '.' . $request->file('usg_image')->getClientOriginalExtension();
             }
 
-            $selectedCategories = $request->input('category_preeclamsia');
+            if ($request->input('visit_id') && $request->input('schedule_id')) {
+                $idVisit = $request->input('visit_id');
+                $idSchedule = $request->input('schedule_id');
 
-            if (empty($selectedCategories)) {
-                $dataHistoryAnc['history_skrining_preklampsia_code'] = null;
-                $dataHistoryAnc['stat_skrining_preklampsia'] = 1;
-            } else {
-                $codeUnique = Str::random(5);
-                foreach ($selectedCategories as $value) {
-                    $data = [
-                        'code_history' => $codeUnique,
-                        'preeclampsia_screenings_id' => $value
-                    ];
+                $dataHistoryAnc = [
+                    'user_id' => Auth::user()->id,
+                    'visit_id' => $idVisit,
+                    'inspection_date' => Carbon::parse($request->input('schedule_date'))->format('Y-m-d'),
+                    'age' => $request->input('age'),
+                    'gestational_age' => $request->input('gestational_age'),
+                    'weight' => $request->input('weight'),
+                    'height' => $request->input('height'),
+                    'lila' => $request->input('lila'),
+                    'sistolik' => $request->input('sistolik'),
+                    'diastolik' => $request->input('diastolik'),
+                    'hemoglobin_level' => $request->input('hemoglobin_level'),
+                    'tetanus_toxoid' => $request->input('tetanus_toxoid'),
+                    'fetal_position' => $request->input('fetal_position'),
+                    'fetal_heartbeat' => $request->input('fetal_heartbeat'),
+                    'note' => $request->input('note'),
+                    'stat_risk_pregnancy_of_ced' => $request->input('lila') < 23.5,
+                    'stat_risk_preeclamsia' => $request->input('sistolik') > 140 || $request->input('diastolik') > 90,
+                    'stat_risk_anemia' => $request->input('hemoglobin_level') < 11,
+                ];
 
-                    PatientPreeclamsiaScreenings::create($data);
+                DB::beginTransaction();
+                if ($request->file('usg_image')) {
+                    $request->file('usg_image')->storeAs('public/usg', $nameImage);
+                    $dataHistoryAnc['usg_img'] = $nameImage;
+                } else {
+                    $dataHistoryAnc['usg_img'] = null;
                 }
 
-                $dataHistoryAnc['history_skrining_preklampsia_code'] = $codeUnique;
-                $dataHistoryAnc['stat_skrining_preklampsia'] = $this->statPreeclamsia($selectedCategories);
+                $selectedCategories = $request->input('category_preeclamsia');
+
+                if (empty($selectedCategories)) {
+                    $dataHistoryAnc['history_skrining_preklampsia_code'] = null;
+                    $dataHistoryAnc['stat_skrining_preklampsia'] = 1;
+                } else {
+                    $codeUnique = Str::random(5);
+                    foreach ($selectedCategories as $value) {
+                        $data = [
+                            'code_history' => $codeUnique,
+                            'preeclampsia_screenings_id' => $value
+                        ];
+
+                        PatientPreeclamsiaScreenings::create($data);
+                    }
+
+                    $dataHistoryAnc['history_skrining_preklampsia_code'] = $codeUnique;
+                    $dataHistoryAnc['stat_skrining_preklampsia'] = $this->statPreeclamsia($selectedCategories);
+                }
+
+                $historyAnc = HistoryANC::create($dataHistoryAnc);
+                $scheduleANC  = ScheduleANC::find($idSchedule);
+
+                DB::commit();
+
+                if ($historyAnc && $scheduleANC) {
+                    $scheduleANC->update([
+                        'status' => 1
+                    ]);
+
+                    return redirect()->route('user.check-anc.index')->with('success', 'Data Berhasil tersimpan');
+                } else {
+                    return redirect()->route('user.check-anc.index')->with('message', 'Data Gagal tersimpan');
+                }
             }
+        } catch (\Exception $e) {
+            DB::rollback();
+            Storage::delete('public/usg' . $nameImage);
 
-            $historyAnc = HistoryANC::create($dataHistoryAnc);
-            $scheduleANC  = ScheduleANC::find($idSchedule);
-
-            // DB::commit();
-
-            if ($historyAnc && $scheduleANC) {
-                $scheduleANC->update([
-                    'status' => 1
-                ]);
-
-                return redirect()->route('user.check-anc.index')->with('success', 'Data Berhasil tersimpan');
-            } else {
-                return redirect()->route('user.check-anc.index')->with('message', 'Data Gagal tersimpan');
-            }
+            return redirect()->route('user.check-anc.index')->with('message', 'Terjadi Kesalahan pada Sistem');
         }
-        // } catch (\Exception $e) {
-        //     DB::rollback();
-        //     Storage::delete('public/usg' . $nameImage);
-
-        //     return redirect()->route('user.check-anc.index')->with('message', 'Terjadi Kesalahan pada Sistem');
-        // }
     }
 
     public function show($id)
