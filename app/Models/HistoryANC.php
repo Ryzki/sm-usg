@@ -12,7 +12,7 @@ class HistoryANC extends Model
     protected $table = 'history_ancs';
 
     protected $fillable = [
-        'user_id', 'visit_id', 'inspection_date', 'age', 'gestational_age', 'weight', 'height', 'lila', 'sistolik', 'diastolik', 'hemoglobin_level', 'usg_img', 'stat_skrining_preklampsia', 'history_skrining_preklampsia_code', 'note'
+        'user_id', 'visit_id', 'inspection_date', 'age', 'gestational_age', 'weight', 'height', 'lila', 'sistolik', 'diastolik', 'hemoglobin_level', 'tetanus_toxoid', 'fetal_position', 'fetal_heartbeat', 'stat_risk_pregnancy_of_ced', 'stat_risk_preeclamsia', 'stat_risk_anemia', 'usg_img', 'stat_skrining_preklampsia', 'history_skrining_preklampsia_code', 'note'
     ];
 
     public function patient_preeclamsia_screenings()

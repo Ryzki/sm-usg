@@ -37,6 +37,8 @@ class DashboardController extends Controller
             ->latest()
             ->first();
 
+        // return response()->json($conditionUser);
+
         if (empty($conditionUser)) {
             $conditionUser = 0;
         }

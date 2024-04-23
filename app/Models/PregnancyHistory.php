@@ -19,11 +19,10 @@ class PregnancyHistory extends Model
 
     public function getGestationalAgeInWeeksAttribute()
     {
-        $estimatedDueDate = $this->estimated_due_date;
+        $lastPeriodDate = $this->last_period_date;
         $today = Carbon::now();
 
-        $diffInDays = $today->diffInDays($estimatedDueDate);
-        $weeks = floor($diffInDays / 7);
+        $weeks = $today->diffInWeeks($lastPeriodDate);
 
         return $weeks;
     }

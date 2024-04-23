@@ -8,9 +8,7 @@ use App\Models\HistoryANC;
 use App\Models\ScheduleANC;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use GuzzleHttp\Psr7\Response;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\DB;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PreeclampsiaScreening;
@@ -56,25 +54,50 @@ class CheckAncController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validateUser = $request->validate([
             'visit_abbreviation' => 'required',
             'schedule_date' => 'required',
             'age' => 'required',
             'gestational_age' => 'required',
-            'weight' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'height' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'lila' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'sistolik_diastolik' => 'required',
-            // 'diastolik' => 'required',
+            'weight' => 'required',
+            'height' => 'required',
+            'lila' => 'required',
+            'sistolik' => 'required|required_with:diastolik',
+            'diastolik' => 'required|required_with:sistolik',
             'hemoglobin_level' => 'required',
             'tetanus_toxoid' => 'required|in:0,1',
-            'position' => 'required|in:1,2,3,4',
+            'fetal_position' => 'required|in:1,2,3,4',
+            'fetal_heartbeat' => 'required',
             'usg_image' => 'image|mimes:jpg,jpeg,png|max:2048',
-            'note' => 'max:200'
+            'note' => 'max:1000'
+        ], [
+            'visit_abbreviation.required' => 'Abbreviasi kunjungan harus diisi.',
+            'schedule_date.required' => 'Tanggal jadwal harus diisi.',
+            'age.required' => 'Usia harus diisi.',
+            'gestational_age.required' => 'Usia kehamilan harus diisi.',
+            'weight.required' => 'Berat harus diisi.',
+            'height.required' => 'Tinggi harus diisi.',
+            'lila.required' => 'LILA harus diisi.',
+            'sistolik.required' => 'Sistolik harus diisi.',
+            'sistolik.required_with' => 'Sistolik harus diisi jika diastolik diisi.',
+            'diastolik.required' => 'Diastolik harus diisi.',
+            'diastolik.required_with' => 'Diastolik harus diisi jika sistolik diisi.',
+            'hemoglobin_level.required' => 'Kadar hemoglobin harus diisi.',
+            'tetanus_toxoid.required' => 'Tetanus Toxoid harus dipilih.',
+            'tetanus_toxoid.in' => 'Tetanus Toxoid harus dipilih.',
+            'fetal_position.required' => 'Posisi janin harus dipilih.',
+            'fetal_position.in' => 'Posisi janin tidak valid.',
+            'fetal_heartbeat.required' => 'Detak jantung janin harus diisi.',
+            'usg_image.image' => 'File harus berupa gambar.',
+            'usg_image.mimes' => 'File harus berformat jpg, jpeg, atau png.',
+            'usg_image.max' => 'Ukuran file tidak boleh lebih dari 2MB.',
+            'note.max' => 'Catatan tidak boleh melebihi 1000 karakter.'
         ]);
 
         // try {
-        $nameImage = Str::random(30) . '.' . $request->file('usg_image')->getClientOriginalExtension();
+        if ($request->file('usg_image')) {
+            $nameImage = Str::random(30) . '.' . $request->file('usg_image')->getClientOriginalExtension();
+        }
 
         if ($request->input('visit_id') && $request->input('schedule_id')) {
             $idVisit = $request->input('visit_id');
@@ -97,7 +120,7 @@ class CheckAncController extends Controller
                 'fetal_heartbeat' => $request->input('fetal_heartbeat'),
                 'note' => $request->input('note'),
                 'stat_risk_pregnancy_of_ced' => $request->input('lila') < 23.5,
-                'stat_risk_preeclampsia' => $request->input('sistolik') > 140 || $request->input('diastolik') > 90,
+                'stat_risk_preeclamsia' => $request->input('sistolik') > 140 || $request->input('diastolik') > 90,
                 'stat_risk_anemia' => $request->input('hemoglobin_level') < 11,
             ];
 

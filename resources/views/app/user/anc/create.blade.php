@@ -69,8 +69,9 @@
                             <div class="mb-3">
                                 <label class="form-label">Berat Badan</label>
                                 <div class="input-group mb-3">
-                                    <input type="number" class="form-control @error('weight') is-invalid @enderror"
-                                        name="weight" id="weight">
+                                    <input type="number" step="0.01"
+                                        class="form-control @error('weight') is-invalid @enderror" name="weight"
+                                        id="weight">
                                     <span class="input-group-text">Kg</span>
                                     @error('weight')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -80,8 +81,9 @@
                             <div class="mb-3">
                                 <label class="form-label">Tinggi Badan</label>
                                 <div class="input-group mb-3">
-                                    <input type="number" class="form-control @error('height') is-invalid @enderror"
-                                        name="height" id="height">
+                                    <input type="number" step="0.01"
+                                        class="form-control @error('height') is-invalid @enderror" name="height"
+                                        id="height">
                                     <span class="input-group-text">cm</span>
                                     @error('height')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -95,8 +97,9 @@
                                     </span>
                                 </label>
                                 <div class="input-group mb-3">
-                                    <input type="number" class="form-control @error('lila') is-invalid @enderror"
-                                        name="lila" id="lila">
+                                    <input type="number" step="0.01"
+                                        class="form-control @error('lila') is-invalid @enderror" name="lila"
+                                        id="lila">
                                     <span class="input-group-text">cm</span>
                                     @error('lila')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -110,21 +113,22 @@
                                     </span>
                                 </label>
                                 <div class="input-group">
-                                    <input type="number"
-                                        class="form-control  @error('sistolik_diastolik') is-invalid @enderror"
-                                        placeholder="Sistolik" id="sistolik_diastolik" name="sistolik_diastolik[]">
+                                    <input type="number" class="form-control  @error('sistolik') is-invalid @enderror"
+                                        placeholder="Sistolik" id="sistolik" name="sistolik">
                                     <span class="input-group-text">
                                         /
                                     </span>
-                                    <input type="number"
-                                        class="form-control  @error('sistolik_diastolik') is-invalid @enderror"
-                                        placeholder="Diastolik" id="sistolik_diastolik" name="sistolik_diastolik[]">
+                                    <input type="number" class="form-control  @error('diastolik') is-invalid @enderror"
+                                        placeholder="Diastolik" id="diastolik" name="diastolik">
                                     <span class="input-group-text">
                                         mmHg
                                     </span>
-                                    @error('sistolik_diastolik')
+                                    @error('sistolik', 'diastolik')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
+                                    {{-- @error('diastolik')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror --}}
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -133,7 +137,7 @@
                                         Anemia</span>
                                 </label>
                                 <div class="input-group">
-                                    <input type="number"
+                                    <input type="number" step="0.01"
                                         class="form-control @error('hemoglobin_level') is-invalid @enderror"
                                         name="hemoglobin_level" id="hemoglobin_level">
                                     <span class="input-group-text">
