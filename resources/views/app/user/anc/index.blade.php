@@ -90,8 +90,7 @@
                                         </div>
                                     @elseif(!$visit->scheduleAncs->isEmpty() && $visit->scheduleAncs->first()->status == 1)
                                         <div class="text-right">
-                                            <a class="btn btn-success"
-                                                href="{{ route('user.check-anc.create', ['name_anc' => $visit->abbreviation, 'schedule_date' => $visit->scheduleAncs->first()->schedule_date->format('d-m-Y')]) }}">Detail</a>
+                                            <a class="btn btn-success" href="#">Detail</a>
                                         </div>
                                     @endif
                                 @else
