@@ -275,7 +275,8 @@
                                                 Masuk
                                             </a>
                                         @elseif($scheduleUser->status == 1)
-                                            <a class="btn btn-success" href="">
+                                            <a class="btn btn-success"
+                                                href="{{ route('user.check-anc.show', ['name_anc' => $scheduleUser->visit->abbreviation, 'schedule_date' => $scheduleUser->schedule_date->format('d-m-Y')]) }}">
                                                 Detail
                                             </a>
                                         @endif
