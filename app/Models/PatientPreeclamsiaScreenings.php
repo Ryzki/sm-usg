@@ -15,6 +15,11 @@ class PatientPreeclamsiaScreenings extends Model
 
     public function history_anc()
     {
-        return $this->belongsTo(HistoryANC::class, 'code_history', 'history_skrining_preklampsia_code');
+        return $this->belongsTo(HistoryAnc::class,  'history_skrining_preklampsia_code', 'code_history');
+    }
+
+    public function preeclamsiaScreenings()
+    {
+        return $this->belongsTo(PreeclampsiaScreening::class, 'preeclampsia_screenings_id');
     }
 }

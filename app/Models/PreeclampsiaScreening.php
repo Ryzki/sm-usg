@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class PreeclampsiaScreening extends Model
 {
     use HasFactory;
+
+    protected $table = 'preeclampsia_screenings';
+
+    public function patientPreeclampsiaScreenings()
+    {
+        return $this->hasMany(PatientPreeclamsiaScreenings::class);
+    }
 }

@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers\User;
 
+
+use DateTime;
 use Carbon\Carbon;
 use App\Models\Visit;
 use App\Models\HistoryANC;
 use App\Models\ScheduleANC;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PreeclampsiaScreening;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Redirect;
 use App\Models\PatientPreeclamsiaScreenings;
 
 class CheckAncController extends Controller
@@ -22,9 +23,12 @@ class CheckAncController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $visits = Visit::with('scheduleAncs')
+        $visits = Visit::with(['scheduleAncs', 'historyAncs'])
             ->with(['scheduleAncs' => function ($query) use ($user) {
                 $query->where('user_id', $user->id);
+            }])
+            ->with(['historyAncs' => function ($query) use ($user) {
+                $query->select('id', 'user_id', 'visit_id', 'inspection_date')->where('user_id', $user->id);
             }])
             ->get();
 
@@ -176,9 +180,29 @@ class CheckAncController extends Controller
         }
     }
 
-    public function show($id)
+    public function show($name_anc, $schedule_date)
     {
-        return view('app.user.anc.show');
+        $user = Auth::user();
+        $schedule_date = new DateTime($schedule_date);
+        $detailVisit = Visit::with(['scheduleAncs', 'historyAncs.listPreclamsiaScreen.preeclamsiaScreenings'])
+            ->with(['historyAncs' => function ($query) use ($user, $schedule_date) {
+                $query->where('user_id', $user->id)
+                    ->where('inspection_date', $schedule_date->format('Y-m-d'));
+            }])
+            ->with(['scheduleAncs' => function ($query) use ($user, $schedule_date) {
+                $query->where('user_id', $user->id)
+                    ->where('schedule_date', $schedule_date->format('Y-m-d'));
+            }])
+            ->where('abbreviation', $name_anc)
+            ->first();
+
+        // return response()->json($detailVisit);
+
+        if (count($detailVisit->scheduleAncs) == 0 && count($detailVisit->historyAncs) == 0) {
+            return redirect()->route('user.check-anc.index')->with('message', 'Terjadi kesalahan pengguna');
+        }
+
+        return view('app.user.anc.show', compact('detailVisit'));
     }
 
     public function edit($id)
@@ -211,11 +235,11 @@ class CheckAncController extends Controller
         }
 
         if ($lowRiskCount < 2 && $highRiskCount == 0) {
-            $riskCategory = 1;
+            $riskCategory = 2;
         } else if ($lowRiskCount == 0 && $highRiskCount == 1) {
-            $riskCategory = 2;
+            $riskCategory = 3;
         } else {
-            $riskCategory = 2;
+            $riskCategory = 3;
         }
 
         return $riskCategory;

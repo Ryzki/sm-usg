@@ -15,4 +15,9 @@ class Visit extends Model
     {
         return $this->hasMany(ScheduleANC::class);
     }
+
+    public function historyAncs()
+    {
+        return $this->hasMany(HistoryANC::class);
+    }
 }

@@ -15,9 +15,19 @@ class HistoryANC extends Model
         'user_id', 'visit_id', 'inspection_date', 'age', 'gestational_age', 'weight', 'height', 'lila', 'sistolik', 'diastolik', 'hemoglobin_level', 'tetanus_toxoid', 'fetal_position', 'fetal_heartbeat', 'stat_risk_pregnancy_of_ced', 'stat_risk_preeclamsia', 'stat_risk_anemia', 'usg_img', 'stat_skrining_preklampsia', 'history_skrining_preklampsia_code', 'note'
     ];
 
-    public function patient_preeclamsia_screenings()
+    public function listPreclamsiaScreen()
     {
-        return $this->hasMany(PatientPreeclamsiaScreenings::class, 'history_skrining_preklampsia_code', 'code_history');
+        return $this->hasMany(PatientPreeclamsiaScreenings::class, 'code_history', 'history_skrining_preklampsia_code');
+    }
+
+    public function visit()
+    {
+        return $this->belongsTo(Visit::class);
+    }
+
+    public function scheduleAncs()
+    {
+        return $this->belongsTo(ScheduleANC::class);
     }
 
     public function getStatSkriningPreklampsiaLabelAttribute()
