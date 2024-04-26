@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Helpers\MyHelper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\BloodSupplement;
@@ -33,7 +34,7 @@ class BloodSupplementController extends Controller
             ->latest()
             ->first();
 
-        $permissionBloodSupplement = $this->calculateGestationalAge($pregnantHistory->last_period_date);
+        $permissionBloodSupplement = MyHelper::calculateGestationalAge($pregnantHistory->last_period_date);
 
         return view('app.user.schedule-supplement', compact('permissionBloodSupplement'));
     }
@@ -101,16 +102,5 @@ class BloodSupplementController extends Controller
 
     public function destroy($id)
     {
-    }
-
-    public function calculateGestationalAge($lastPeriodDate)
-    {
-        // Hitung usia kehamilan dari tanggal terakhir haid
-        $lastPeriod = Carbon::createFromFormat('Y-m-d', $lastPeriodDate);
-        $currentDate = Carbon::now();
-        $gestationalAge = $lastPeriod->diffInWeeks($currentDate);
-
-        // Kembalikan true jika usia kehamilan lebih dari atau sama dengan 16 minggu, jika tidak kembalikan false
-        return $gestationalAge >= 16;
     }
 }

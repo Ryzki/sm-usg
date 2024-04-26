@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Helpers\MyHelper;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Visit;
@@ -37,7 +38,12 @@ class DashboardController extends Controller
             ->latest()
             ->first();
 
-        // return response()->json($conditionUser);
+        $pregnantHistory = PregnancyHistory::where('pregnant_mother_id', $idUser)
+            ->where('status', 1)
+            ->latest()
+            ->first();
+
+        $permissionBloodSupplement = MyHelper::calculateGestationalAge($pregnantHistory->last_period_date);
 
         if (empty($conditionUser)) {
             $conditionUser = 0;
@@ -48,10 +54,10 @@ class DashboardController extends Controller
 
             $pregnantHistoryFormatted = Carbon::createFromFormat('Y-m-d', $pregnantHistory->estimated_due_date)
                 ->translatedFormat('d F Y');
-            return view('app.user.index', compact('user', 'pregnantHistoryFormatted', 'gestationalAge', 'conditionUser', 'scheduleUser'));
+            return view('app.user.index', compact('user', 'pregnantHistoryFormatted', 'gestationalAge', 'conditionUser', 'scheduleUser', 'permissionBloodSupplement'));
         }
 
-        return view('app.user.index', compact('user', 'conditionUser', 'scheduleUser'));
+        return view('app.user.index', compact('user', 'conditionUser', 'scheduleUser', 'permissionBloodSupplement'));
     }
 
     public function verified(Request $request)

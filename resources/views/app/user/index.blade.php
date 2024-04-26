@@ -118,7 +118,8 @@
                     </div>
                     <div class="col-auto">
                         <!-- Jika sudah ada Dokternya atau sudah verifikasi muncul tanda chat ini -->
-                        <a href="#" class="btn btn-outline-blue d-none d-sm-inline-block">
+                        <a href="https://wa.me/{{ $user->midwife->phone_number }}" target="_blank"
+                            class="btn btn-outline-blue d-none d-sm-inline-block">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user-scan">
@@ -132,7 +133,8 @@
                             </svg>
                             Konsultasi
                         </a>
-                        <a href="#" class="btn btn-icon btn-outline-blue d-sm-none" data-bs-toggle="modal">
+                        <a href="https://wa.me/{{ $user->midwife->phone_number }}" target="_blank"
+                            class="btn btn-icon btn-outline-blue d-sm-none">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-message">
@@ -147,12 +149,10 @@
                 </div>
             </div>
             <div class="card p-3 mb-3">
+                <h5 class="card-title fw-bolder">STATUS KESEHATAN IBU HAMIL</h5>
                 <div class="row">
                     <div class="col">
                         <div class="datagrid-item">
-                            <div class="datagrid-title">
-                                Status Ibu Hamil
-                            </div>
                             <div class="datagrid-content">
                                 @if ($conditionUser && $conditionUser->stat_skrining_preklampsia === 1)
                                     <span class="status status-success mt-2 fs-6">
@@ -175,42 +175,27 @@
                                         Sehat
                                     </span>
                                 @endif
+
                                 @if ($conditionUser && $conditionUser->stat_risk_pregnancy_of_ced)
                                     <span class="status status-danger mt-2 fs-6">
                                         <span class="status-dot status-dot-animated"></span>
-                                        R.Kehamilan KEK
+                                        Resiko Kehamilan KEK
                                     </span>
                                 @endif
 
                                 @if ($conditionUser && $conditionUser->stat_risk_preeclamsia)
                                     <span class="status status-danger mt-2 fs-6">
                                         <span class="status-dot status-dot-animated"></span>
-                                        R.Preklamsia
+                                        Resiko Preklamsia
                                     </span>
                                 @endif
 
                                 @if ($conditionUser && $conditionUser->stat_risk_anemia)
                                     <span class="status status-danger mt-2 fs-6">
                                         <span class="status-dot status-dot-animated"></span>
-                                        R.Anemia
+                                        Resiko Anemia
                                     </span>
                                 @endif
-                                {{-- <span class="status status-warning mt-2 fs-6">
-                                    <span class="status-dot status-dot-animated"></span>
-                                    Resiko Sedang
-                                </span>
-                                <span class="status status-danger mt-2 fs-6">
-                                    <span class="status-dot status-dot-animated"></span>
-                                    Resiko Kehamilan KEK
-                                </span>
-                                <span class="status status-danger mt-2 fs-6">
-                                    <span class="status-dot status-dot-animated"></span>
-                                    Resiko Preklamsia
-                                </span>
-                                <span class="status status-danger mt-2 fs-6">
-                                    <span class="status-dot status-dot-animated"></span>
-                                    Resiko Anemia
-                                </span> --}}
                             </div>
                         </div>
                     </div>
@@ -303,57 +288,86 @@
                 @endif
             </div>
             <div class="card p-3 mb-3">
-                <h5 class="card-title fw-bold">Riwayat Minum TTD</h5>
-                <div class="row mb-2">
-                    <div class="card card-sm">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-                                    <span class="bg-primary text-white avatar">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-pill">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path d="M4.5 12.5l8 -8a4.94 4.94 0 0 1 7 7l-8 8a4.94 4.94 0 0 1 -7 -7"></path>
-                                            <path d="M8.5 8.5l7 7"></path>
-                                        </svg>
-                                    </span>
-                                </div>
-                                <div class="col">
-                                    <div class="font-weight-medium">
-                                        30x (Minum Obat Tambah Darah)
+                <h5 class="card-title fw-bold">RIWAYAT MINUM TTD</h5>
+                @if ($permissionBloodSupplement)
+                    <div class="row mb-2">
+                        <div class="card card-sm">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span class="bg-primary text-white avatar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-pill">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M4.5 12.5l8 -8a4.94 4.94 0 0 1 7 7l-8 8a4.94 4.94 0 0 1 -7 -7">
+                                                </path>
+                                                <path d="M8.5 8.5l7 7"></path>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="font-weight-medium">
+                                            30x (Minum Obat Tambah Darah)
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row ">
-                    <div class="card card-sm">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-auto">
-                                    <span class="bg-danger text-white avatar">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-pill">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path d="M4.5 12.5l8 -8a4.94 4.94 0 0 1 7 7l-8 8a4.94 4.94 0 0 1 -7 -7"></path>
-                                            <path d="M8.5 8.5l7 7"></path>
-                                        </svg>
-                                    </span>
-                                </div>
-                                <div class="col">
-                                    <div class="font-weight-medium">
-                                        5x (Terlewat Minum Obat)
+                    <div class="row ">
+                        <div class="card card-sm">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span class="bg-danger text-white avatar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-pill">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M4.5 12.5l8 -8a4.94 4.94 0 0 1 7 7l-8 8a4.94 4.94 0 0 1 -7 -7">
+                                                </path>
+                                                <path d="M8.5 8.5l7 7"></path>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="font-weight-medium">
+                                            5x (Terlewat Minum Obat)
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @else
+                    <div class="alert alert-warning" role="alert">
+                        <div class="d-flex">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24"
+                                    height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M12 9v4"></path>
+                                    <path
+                                        d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z">
+                                    </path>
+                                    <path d="M12 16h.01"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="alert-title">Fitur ini di Non-Aktifkan Sementara</h4>
+                                <div class="text-secondary">
+                                    <p>Fitur akan Aktif ketika <strong>Usia Kandungan > 16 Minggu</strong>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
             </div>
         </div>
     </div>
