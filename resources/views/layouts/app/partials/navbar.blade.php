@@ -111,7 +111,7 @@
                     </ul>
                 @else
                     <ul class="navbar-nav">
-                        <li class="nav-item {{ Route::is('user.verified') ? 'active' : '' }}">
+                        <li class="nav-item {{ Route::is('verification') ? 'active' : '' }}">
                             <a class="nav-link" href="#">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"

@@ -34,7 +34,7 @@ class BloodSupplementController extends Controller
             ->latest()
             ->first();
 
-        $permissionBloodSupplement = MyHelper::calculateGestationalAge($pregnantHistory->last_period_date);
+        $permissionBloodSupplement = MyHelper::hitungUsiaKehamilan($pregnantHistory->last_period_date);
 
         return view('app.user.schedule-supplement', compact('permissionBloodSupplement'));
     }

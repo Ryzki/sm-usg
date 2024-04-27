@@ -21,7 +21,27 @@
                         <div class="card-header">
                             <h3 class="card-title">Form Verifikasi</h3>
                         </div>
-                        <form action="{{ route('user.verified') }}" method="POST">
+                        @if (session()->has('message'))
+                            <div class="row">
+                                <div class="alert alert-important alert-success alert-dismissible" role="alert">
+                                    <div class="d-flex">
+                                        <div>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M5 12l5 5l10 -10"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            {{ session('message') }}
+                                        </div>
+                                    </div>
+                                    <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+                                </div>
+                            </div>
+                        @endif
+                        <form action="{{ route('verification') }}" method="POST">
                             @csrf
                             <div class="card-body">
                                 <div class="row row-cards">
@@ -85,20 +105,23 @@
                                         <div class="mb-3">
                                             <div class="row align-items-center">
                                                 <div class="col">
-                                                    <label class="form-label">No Handphone</label>
+                                                    <label class="form-label">No Handphone
+                                                    </label>
                                                 </div>
                                                 <div class="col-auto ">
                                                     <span class="form-help" data-bs-toggle="popover" data-bs-placement="top"
-                                                        data-bs-content="<p>Nomor Handphone wajib yang sudah Terdaftar oleh Aplikasi Whatsapp</p>"
+                                                        data-bs-content="<p>Nomor Handphone wajib yang sudah Terdaftar oleh Whatsapp</p>"
                                                         data-bs-html="true">
                                                         ?
                                                     </span>
                                                 </div>
                                             </div>
                                             <input class="form-control @error('phone_number') is-invalid @enderror"
-                                                id="phone_number" name="phone_number" value="{{ old('phone_number') }}">
+                                                id="phone_number" name="phone_number" value="{{ old('phone_number') }}"
+                                                placeholder="081XXXXXXXXX">
                                             @error('phone_number')
-                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                <div class="invalid-feedback">{{ $message }}
+                                                </div>
                                             @enderror
                                         </div>
                                     </div>
@@ -142,17 +165,25 @@
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label class="form-label">Kelurahan</label>
-                                            <select
-                                                class="form-control form-select @error('sub_district') is-invalid @enderror"
-                                                id="sub_district" name="sub_district">
-                                                <option>Pilih Kelurahan</option>
-                                                @foreach ($subDistricts as $subDistrict)
-                                                    <option value="{{ $subDistrict->name }}"
-                                                        data-id="{{ $subDistrict->id }}">
-                                                        {{ $subDistrict->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
+                                            @if ($user->role_id === 1)
+                                                <select
+                                                    class="form-control form-select @error('sub_district') is-invalid @enderror"
+                                                    id="sub_district" name="sub_district">
+                                                    <option>Pilih Kelurahan</option>
+                                                    @foreach ($subDistricts as $subDistrict)
+                                                        <option value="{{ $subDistrict->name }}"
+                                                            data-id="{{ $subDistrict->id }}">
+                                                            {{ $subDistrict->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            @else
+                                                <input type="text"
+                                                    class="form-control  @error('sub_district') is-invalid @enderror"
+                                                    id="sub_district" name="sub_district"
+                                                    value="{{ old('sub_district') }}">
+                                            @endif
+
                                             @error('sub_district')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -163,7 +194,9 @@
                                             <label class="form-label">Kecamatan</label>
                                             <input type="text"
                                                 class="form-control @error('district') is-invalid @enderror"
-                                                value="Tembalang" id="district" name="district" readonly>
+                                                @if ($user->role_id === 1) value="Tembalang" @readonly(true) @endif
+                                                id="district" name="district"
+                                                @if ($user->role_id !== 1) value="{{ old('district') }}" @endif>
                                             @error('district')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -174,29 +207,34 @@
                                             <label class="form-label">Kota/Kabupaten</label>
                                             <input type="text"
                                                 class="form-control @error('city') is-invalid @enderror"
-                                                value="Kota Semarang" id="city" name="city" readonly>
+                                                @if ($user->role_id === 1) value="Kota Semarang" @readonly(true) @endif
+                                                id="city" name="city"
+                                                @if ($user->role_id !== 1) value="{{ old('city') }}" @endif>
                                             @error('city')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label class="form-label">Penanggung Jawab</label>
-                                            <div>
-                                                <div class="input-group mb-2" id="midwife_area">
-                                                    <span class="input-group-text">
-                                                        Bidan
-                                                    </span>
-                                                    <input type="hidden" id="midwife_id" name="midwife">
-                                                    <input type="text" class="form-control" id="midwife" readonly>
-                                                </div>
-                                                <div id="alert-midwife-area">
+                                    @if ($user->role_id === 1)
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label class="form-label">Penanggung Jawab</label>
+                                                <div>
+                                                    <div class="input-group mb-2" id="midwife_area">
+                                                        <span class="input-group-text">
+                                                            Bidan
+                                                        </span>
+                                                        <input type="hidden" id="midwife_id" name="midwife">
+                                                        <input type="text" class="form-control" id="midwife"
+                                                            readonly>
+                                                    </div>
+                                                    <div id="alert-midwife-area">
 
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 </div>
                             </div>
                             <div class="card-footer text-end">
@@ -219,53 +257,56 @@
     <script src="/assets/main/js/libs/datepicker/locale/bootstrap-datepicker.id.min.js"></script>
     <script>
         $(document).ready(function() {
-
-
             $('#date_of_birth').datepicker({
                 language: "id",
                 clearBtn: true
             });
-
-            $('#RA').on('change', function() {
-                getMidWife();
-            });
-
-            $('#sub_district').on('change', function() {
-                getMidWife();
-            });
-
-            function getMidWife() {
-                $('#alert-midwife-area .form-hint').remove();
-
-                $.ajax({
-                    url: '{{ route('user.get-bidan') }}',
-                    method: 'POST',
-                    data: {
-                        NA: $('#RA').val(),
-                        subDistrict: $('#sub_district option:selected').data('id')
-                    },
-                    success: function(response) {
-                        $('#alert-midwife-area .form-hint').remove();
-
-                        if (response.status) {
-                            $('#midwife').val(response.data.full_name);
-                            $('#midwife_id').val(response.data.id);
-                            $('#alert-midwife-area').append('<small class="form-hint text-success">' +
-                                response
-                                .message + '</small>');
-                        } else {
-                            $('#midwife').val('-');
-                            $('#midwife_id').val('');
-                            $('#alert-midwife-area').append('<small class="form-hint text-danger">' +
-                                response
-                                .message + '</small>');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Terjadi kesalahan saat mengirim data ke backend:', error);
-                    }
-                });
-            }
         });
     </script>
+    @if ($user->role_id === 1)
+        <script>
+            $(document).ready(function() {
+                $('#RA').on('change', function() {
+                    getMidWife();
+                });
+
+                $('#sub_district').on('change', function() {
+                    getMidWife();
+                });
+
+                function getMidWife() {
+                    $('#alert-midwife-area .form-hint').remove();
+
+                    $.ajax({
+                        url: "{{ route('get_bidan') }}",
+                        method: "POST",
+                        data: {
+                            NA: $('#RA').val(),
+                            subDistrict: $('#sub_district option:selected').data('id')
+                        },
+                        success: function(response) {
+                            $('#alert-midwife-area .form-hint').remove();
+
+                            if (response.status) {
+                                $('#midwife').val(response.data.full_name);
+                                $('#midwife_id').val(response.data.id);
+                                $('#alert-midwife-area').append('<small class="form-hint text-success">' +
+                                    response
+                                    .message + '</small>');
+                            } else {
+                                $('#midwife').val('-');
+                                $('#midwife_id').val('');
+                                $('#alert-midwife-area').append('<small class="form-hint text-danger">' +
+                                    response
+                                    .message + '</small>');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Terjadi kesalahan saat mengirim data ke backend:', error);
+                        }
+                    });
+                }
+            });
+        </script>
+    @endif
 @endpush

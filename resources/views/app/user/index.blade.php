@@ -289,7 +289,7 @@
             </div>
             <div class="card p-3 mb-3">
                 <h5 class="card-title fw-bold">RIWAYAT MINUM TTD</h5>
-                @if ($permissionBloodSupplement)
+                @if (!isset($permissionBloodSupplement))
                     <div class="row mb-2">
                         <div class="card card-sm">
                             <div class="card-body">

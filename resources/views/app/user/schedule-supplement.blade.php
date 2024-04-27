@@ -18,7 +18,7 @@
         <div class="container-xl">
             <div class="card">
                 <div class="card-body">
-                    @if ($permissionBloodSupplement)
+                    @if ($permissionBloodSupplement['minggu'] >= 16)
                         <div id="calendar"></div>
                     @else
                         <div class="alert alert-warning" role="alert">

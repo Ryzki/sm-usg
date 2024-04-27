@@ -5,13 +5,10 @@ namespace App\Http\Controllers\User;
 use App\Helpers\MyHelper;
 use Carbon\Carbon;
 use App\Models\User;
-use App\Models\Visit;
 use App\Models\HistoryANC;
 use App\Models\MidwifeArea;
 use App\Models\ScheduleANC;
-use App\Models\SubDistrict;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Models\PregnancyHistory;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -43,98 +40,22 @@ class DashboardController extends Controller
             ->latest()
             ->first();
 
-        $permissionBloodSupplement = MyHelper::calculateGestationalAge($pregnantHistory->last_period_date);
-
         if (empty($conditionUser)) {
             $conditionUser = 0;
         }
 
         if ($pregnantHistory) {
-            $gestationalAge = $this->hitungUsiaJanin($pregnantHistory->last_period_date);
+            $usiaKehamilan = MyHelper::hitungUsiaKehamilan($pregnantHistory->last_period_date);
+
+            $gestationalAge = $usiaKehamilan['minggu'] . ' Minggu, ' . $usiaKehamilan['hari'] . ' Hari';
+            $permissionBloodSupplement = $usiaKehamilan['minggu'] >= 16;
 
             $pregnantHistoryFormatted = Carbon::createFromFormat('Y-m-d', $pregnantHistory->estimated_due_date)
                 ->translatedFormat('d F Y');
             return view('app.user.index', compact('user', 'pregnantHistoryFormatted', 'gestationalAge', 'conditionUser', 'scheduleUser', 'permissionBloodSupplement'));
         }
 
-        return view('app.user.index', compact('user', 'conditionUser', 'scheduleUser', 'permissionBloodSupplement'));
-    }
-
-    public function verified(Request $request)
-    {
-        if ($request->input()) {
-            $validateUser = $request->validate([
-                'nik' => 'required|min:16',
-                'full_name' => 'required',
-                'email' => 'required|email:dns',
-                'place_of_birth' => 'required',
-                'date_of_birth' => 'required',
-                'phone_number' => 'required|min:10|max:13|regex:/^8\d{10,12}$/',
-                'home_address' => 'required',
-                'NA' => 'required',
-                'RA' => 'required',
-                'sub_district' => ['required', Rule::in(SubDistrict::pluck('name')->toArray())],
-                'district' => 'required',
-                'city' => 'required',
-                'midwife' => 'required'
-            ], [
-                'nik.required' => 'NIK harus diisi.',
-                'nik.min' => 'NIK harus memiliki panjang minimal :min karakter.',
-                'nik.max' => 'NIK harus memiliki panjang maksimal :max karakter.',
-                'full_name.required' => 'Nama lengkap harus diisi.',
-                'email.required' => 'Alamat email harus diisi.',
-                'email.email' => 'Alamat email harus valid.',
-                'place_of_birth.required' => 'Tempat lahir harus diisi.',
-                'date_of_birth.required' => 'Tanggal lahir harus diisi.',
-                'phone_number.required' => 'Nomor Telepon harus diisi.',
-                'phone_number.min' => 'Nomor Telepon harus memiliki panjang minimal :min karakter.',
-                'phone_number.max' => 'Nomor Telepon harus memiliki panjang maksimal :max karakter.',
-                'phone_number.regex' => 'Nomor Telepon harus dimulai dengan angka 8 dan diikuti oleh 10 hingga 12 digit angka.',
-                'home_address.required' => 'Alamat Rumah harus diisi.',
-                'NA.required' => 'RT harus diisi.',
-                'RA.required' => 'RW harus diisi.',
-                'sub_district.required' => 'Kecamatan harus diisi.',
-                'sub_district.in' => 'Kecamatan yang dipilih tidak valid',
-                'district.required' => 'Kota/kabupaten harus diisi.',
-                'city.required' => 'Kota harus diisi.',
-                'midwife.required' => 'Bidan harus diisi.'
-            ]);
-
-            if ($request->input('id')) {
-                $idUser = $request->input('id');
-
-                $dataUser = [
-                    'full_name' => $request->input('full_name'),
-                    'email' => $request->input('email'),
-                    'verified' => true,
-                    'nik' => $request->input('nik'),
-                    'phone_number' => '62' . $request->input('phone_number'),
-                    'home_address' =>  $request->input('home_address'),
-                    'place_of_birth' => $request->input('place_of_birth'),
-                    'date_of_birth' => Carbon::createFromFormat('d-m-Y', $request->input('date_of_birth'))->format('Y-m-d'),
-                    'NA' => $request->input('NA'),
-                    'RA' => $request->input('RA'),
-                    'subdistrict' => $request->input('sub_district'),
-                    'district' => $request->input('district'),
-                    'city' => $request->input('city'),
-                    'midwife_id' => $request->input('midwife'),
-                ];
-
-                $user = User::findOrFail($idUser);
-                $user->update($dataUser);
-
-                // Ambil kembali data pengguna yang diperbarui dari database
-                $updatedUser = User::findOrFail($idUser);
-
-                // Simpan data pengguna yang diperbarui ke dalam sesi dengan mengganti objek Auth::user() dengan data pengguna yang baru
-                Auth::login($updatedUser);
-
-                return redirect()->route('user.dashboard')->with('success', 'Akun anda sudah Terverifikasi. Terima Kasih');
-            }
-        }
-        $user = User::findOrFail(Auth::user()->id);
-        $subDistricts = SubDistrict::all();
-        return view('app.user.verification', compact('user', 'subDistricts'));
+        return view('app.user.index', compact('user', 'conditionUser', 'scheduleUser'));
     }
 
     public function getBidan(Request $request)
@@ -197,20 +118,5 @@ class DashboardController extends Controller
             'status' => false,
             'message' => 'HPHT gagal diset'
         ], 200);
-    }
-
-    public function hitungUsiaJanin($hpht)
-    {
-        // Tanggal pertama hari terakhir menstruasi
-        $tanggalHPHT = Carbon::createFromFormat('Y-m-d', $hpht);
-
-        // Tanggal saat ini
-        $tanggalSaatIni = Carbon::now();
-
-        // Hitung selisih dalam minggu dan hari
-        $usiaJaninMinggu = $tanggalHPHT->diffInWeeks($tanggalSaatIni);
-        $usiaJaninHari = $tanggalHPHT->diffInDays($tanggalSaatIni) % 7;
-
-        return "$usiaJaninMinggu Minggu, $usiaJaninHari Hari";
     }
 }
