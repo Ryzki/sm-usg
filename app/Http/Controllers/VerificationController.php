@@ -22,7 +22,7 @@ class VerificationController extends Controller
     public function postVerification(Request $request)
     {
         $rules = [
-            'nik' => 'required|min:16',
+            'nik' => 'required|min:1',
             'full_name' => 'required',
             'email' => 'required|email:dns',
             'place_of_birth' => 'required',

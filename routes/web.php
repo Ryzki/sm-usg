@@ -1,19 +1,20 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\ChatController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegistrationController;
 
 // Namespace USER
-use App\Http\Controllers\User\ChatController;
+use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\User\CheckAncController;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\EducationController;
-use App\Http\Controllers\User\BloodSupplementController;
+use App\Http\Controllers\Auth\RegistrationController;
 
 //Namespace MIDWIFE
+use App\Http\Controllers\Midwife\ControlUserController;
+use App\Http\Controllers\User\BloodSupplementController;
 use App\Http\Controllers\Midwife\DashboardController as MidwifeDashboard;
-use App\Http\Controllers\VerificationController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [LoginController::class, 'index'])->name('login');
@@ -39,6 +40,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware('role:Bidan')->name('midwife.')->prefix('/midwife')->group(function () {
         Route::get('/dashboard', [MidwifeDashboard::class, 'index'])->name('dashboard');
+        Route::post('/get-schedule-user', [MidwifeDashboard::class, 'getScheduleUser'])->name('get_schedule_user');
+        Route::resource('/control-user', ControlUserController::class);
     });
 
     Route::middleware('role:Dokter')->name('doctor.')->prefix('/doctor')->group(function () {
