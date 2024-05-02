@@ -15,6 +15,7 @@ use App\Http\Controllers\Auth\RegistrationController;
 use App\Http\Controllers\Midwife\ControlUserController;
 use App\Http\Controllers\User\BloodSupplementController;
 use App\Http\Controllers\Midwife\DashboardController as MidwifeDashboard;
+use App\Http\Controllers\Midwife\ScheduleController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [LoginController::class, 'index'])->name('login');
@@ -41,7 +42,8 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('role:Bidan')->name('midwife.')->prefix('/midwife')->group(function () {
         Route::get('/dashboard', [MidwifeDashboard::class, 'index'])->name('dashboard');
         Route::post('/get-schedule-user', [MidwifeDashboard::class, 'getScheduleUser'])->name('get_schedule_user');
-        Route::resource('/control-user', ControlUserController::class);
+        Route::resource('/control-users', ControlUserController::class);
+        Route::resource('/schedule-users', ScheduleController::class);
     });
 
     Route::middleware('role:Dokter')->name('doctor.')->prefix('/doctor')->group(function () {

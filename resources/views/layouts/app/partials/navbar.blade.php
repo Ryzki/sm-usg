@@ -131,8 +131,8 @@
                                     </span>
                                 </a>
                             </li>
-                            <li class="nav-item {{ Route::is('midwife.control-user*') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('midwife.control-user.index') }}">
+                            <li class="nav-item {{ Route::is('midwife.control-users*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('midwife.control-users.index') }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -150,8 +150,8 @@
                                     </span>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
+                            <li class="nav-item {{ Route::is('midwife.schedule-users*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('midwife.schedule-users.index') }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"

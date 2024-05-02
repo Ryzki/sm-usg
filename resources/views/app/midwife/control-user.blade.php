@@ -15,11 +15,11 @@
     <div class="page-body">
         <div class="container-xl d-flex flex-column justify-content-center">
             <div class="row g-2 mb-3">
-                <form action="{{ route('midwife.control-user.index') }}" method="GET">
+                <form action="{{ route('midwife.control-users.index') }}" method="GET">
                     <div class="col">
                         <div class="input-group">
-                            <input type="text" name="search" class="form-control"
-                                placeholder="Cari berdasarkan Nama atau NIK" value="{{ request()->query('search') }}">
+                            <input type="text" name="search" class="form-control" placeholder="Cari by Nama atau NIK"
+                                value="{{ request()->query('search') }}">
                             <button type="submit" class="btn btn-icon" aria-label="Button">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -31,105 +31,113 @@
                             </button>
                         </div>
                     </div>
-
                 </form>
             </div>
+
             <div class="card">
-                <table class="table table-vcenter table-mobile-md card-table">
-                    <thead>
-                        <tr class="text-center">
-                            <th>Nama</th>
-                            <th>Alamat Domisili</th>
-                            <th>No Handphone</th>
-                            <th>Jadwal ANC</th>
-                            <th>Status Kesehatan</th>
-                            <th class="w-1"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($users as $user)
-                            <tr>
-                                <td data-label="Nama">
-                                    <div class="d-flex py-1 align-items-center">
-                                        <span class="avatar avatar-md me-2">
-                                            {{ implode('', array_map(fn($part) => strtoupper(substr($part, 0, 1)), explode(' ', $user->full_name))) }}
-                                        </span>
-                                        <div class="flex-fill">
-                                            <div class="font-weight-medium">{{ $user->full_name }}</div>
-                                            <div class="text-secondary">
-                                                {{ $user->nik }}
+                <div class="table-responsive">
+                    <table class="table table-vcenter card-table table-mobile-md table-striped">
+                        <thead>
+                            <tr class="text-center">
+                                <th>Nama</th>
+                                <th>Alamat Domisili</th>
+                                <th>No Handphone</th>
+                                <th>Jadwal ANC</th>
+                                <th>Status Kesehatan</th>
+                                <th class="w-1"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($users as $user)
+                                <tr>
+                                    <td data-label="Nama">
+                                        <div class="d-flex py-1 align-items-center">
+                                            <span class="avatar avatar-md me-2">
+                                                {{ implode('', array_map(fn($part) => strtoupper(substr($part, 0, 1)), explode(' ', $user->full_name))) }}
+                                            </span>
+                                            <div class="flex-fill">
+                                                <div class="font-weight-medium">{{ $user->full_name }}</div>
+                                                <div class="text-secondary">
+                                                    {{ $user->nik }}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td class="text-secondary" data-label="Alamat Domisili">
-                                    <div>{{ $user->full_adress }}</div>
-                                </td>
-                                <td data-label="No Handphone">
-                                    <div>{{ $user->formatted_phone }}</div>
-                                </td>
-                                <td class="text-secondary" data-label="Jadwal ANC">
-                                    <button class="btn btn-sm px-2 rounded btn-primary d-inline-block" id="btnScheduleAnc"
-                                        data-bs-toggle="modal" data-bs-target="#modal-simple" data-id="{{ $user->id }}">
-                                        Lihat Jadwal
-                                    </button>
-                                </td>
-                                <td class="text-secondary" data-label="Status Kesehatan">
-                                    @if ($user->historyAncs && $user->latestHistoryAncs->stat_skrining_preklampsia === 1)
-                                        <span class="status status-success mt-2 fs-6">
-                                            <span class="status-dot status-dot-animated"></span>
-                                            {{ $user->latestHistoryAncs->stat_skrining_preklampsia_label }}
-                                        </span>
-                                    @elseif ($user->historyAncs && $user->latestHistoryAncs->stat_skrining_preklampsia === 2)
-                                        <span class="status status-warning mt-2 fs-6">
-                                            <span class="status-dot status-dot-animated"></span>
-                                            {{ $user->latestHistoryAncs->stat_skrining_preklampsia_label }}
-                                        </span>
-                                    @elseif ($user->historyAncs && $user->latestHistoryAncs->stat_skrining_preklampsia === 3)
-                                        <span class="status status-danger mt-2 fs-6">
-                                            <span class="status-dot status-dot-animated"></span>
-                                            {{ $user->latestHistoryAncs->stat_skrining_preklampsia_label }}
-                                        </span>
-                                    @elseif(empty($user->historyAncs))
-                                        <span class="status status-success mt-2 fs-6">
-                                            <span class="status-dot status-dot-animated"></span>
-                                            Sehat
-                                        </span>
-                                    @endif
+                                    </td>
+                                    <td class="text-secondary" data-label="Alamat Domisili">
+                                        <div>{{ $user->full_adress }}</div>
+                                    </td>
+                                    <td data-label="No Handphone">
+                                        <div>{{ $user->formatted_phone }}</div>
+                                    </td>
+                                    <td class="text-secondary" data-label="Jadwal ANC">
+                                        <button class="btn btn-sm px-2 rounded btn-primary d-inline-block"
+                                            id="btnScheduleAnc" data-bs-toggle="modal" data-bs-target="#modal-simple"
+                                            data-id="{{ $user->id }}">
+                                            Lihat Jadwal
+                                        </button>
+                                    </td>
+                                    <td class="text-secondary" data-label="Status Kesehatan">
+                                        @if ($user->historyAncs && $user->latestHistoryAncs->stat_skrining_preklampsia === 1)
+                                            <span class="status status-success mt-2 fs-6">
+                                                <span class="status-dot status-dot-animated"></span>
+                                                {{ $user->latestHistoryAncs->stat_skrining_preklampsia_label }}
+                                            </span>
+                                        @elseif ($user->historyAncs && $user->latestHistoryAncs->stat_skrining_preklampsia === 2)
+                                            <span class="status status-warning mt-2 fs-6">
+                                                <span class="status-dot status-dot-animated"></span>
+                                                {{ $user->latestHistoryAncs->stat_skrining_preklampsia_label }}
+                                            </span>
+                                        @elseif ($user->historyAncs && $user->latestHistoryAncs->stat_skrining_preklampsia === 3)
+                                            <span class="status status-danger mt-2 fs-6">
+                                                <span class="status-dot status-dot-animated"></span>
+                                                {{ $user->latestHistoryAncs->stat_skrining_preklampsia_label }}
+                                            </span>
+                                        @elseif(empty($user->historyAncs))
+                                            <span class="status status-success mt-2 fs-6">
+                                                <span class="status-dot status-dot-animated"></span>
+                                                Sehat
+                                            </span>
+                                        @endif
 
-                                    @if ($user->latestHistoryAncs->stat_risk_pregnancy_of_ced)
-                                        <span class="status status-danger mt-2 fs-6">
-                                            <span class="status-dot status-dot-animated"></span>
-                                            Resiko Kehamilan KEK
-                                        </span>
-                                    @endif
+                                        @if ($user->latestHistoryAncs->stat_risk_pregnancy_of_ced)
+                                            <span class="status status-danger mt-2 fs-6">
+                                                <span class="status-dot status-dot-animated"></span>
+                                                Resiko Kehamilan KEK
+                                            </span>
+                                        @endif
 
-                                    @if ($user->latestHistoryAncs->stat_risk_preeclamsia)
-                                        <span class="status status-danger mt-2 fs-6">
-                                            <span class="status-dot status-dot-animated"></span>
-                                            Resiko Preklamsia
-                                        </span>
-                                    @endif
+                                        @if ($user->latestHistoryAncs->stat_risk_preeclamsia)
+                                            <span class="status status-danger mt-2 fs-6">
+                                                <span class="status-dot status-dot-animated"></span>
+                                                Resiko Preklamsia
+                                            </span>
+                                        @endif
 
-                                    @if ($user->latestHistoryAncs->stat_risk_anemia)
-                                        <span class="status status-danger mt-2 fs-6">
-                                            <span class="status-dot status-dot-animated"></span>
-                                            Resiko Anemia
-                                        </span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <div class="btn-list flex-nowrap">
-                                        <a class="btn" href="https://wa.me/{{ $user->phone_number }}" target="_blank">
-                                            Chat
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                        @if ($user->latestHistoryAncs->stat_risk_anemia)
+                                            <span class="status status-danger mt-2 fs-6">
+                                                <span class="status-dot status-dot-animated"></span>
+                                                Resiko Anemia
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="btn-list flex-nowrap">
+                                            <a class="btn" href="https://wa.me/{{ $user->phone_number }}"
+                                                target="_blank">
+                                                Chat
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
+
+
+
             @if ($users->lastPage() > 1)
                 <div class="card align-items-center mt-2">
                     <ul class="pagination mt-3">
