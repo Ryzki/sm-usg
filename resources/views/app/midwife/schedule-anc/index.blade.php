@@ -106,8 +106,8 @@
 
 @push('styles')
     <link rel="stylesheet" href="/assets/main/css/libs/bootstrap-datepicker3.min.css">
-    <link rel="stylesheet" href="{{ asset('assets/main/libs/datatables/datatables.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/main/libs/sweetalert2/sweetalert2.min.css') }}">
+    <link rel="stylesheet" href="/assets/main/libs/datatables/datatables.min.css">
+    <link rel="stylesheet" href="/assets/main/libs/sweetalert2/sweetalert2.min.css">
     <style>
         @media (max-width: 768px) {
             .search-coloumn-count .d-flex {
@@ -118,10 +118,10 @@
 @endpush
 
 @push('script')
-    <script src="{{ asset('assets/main/js/libs/datepicker/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('assets/main/js/libs/datepicker/locale/bootstrap-datepicker.id.min.js') }}"></script>
-    <script src="{{ asset('assets/main/libs/datatables/datatables.min.js') }}"></script>
-    <script src="{{ asset('assets/main/libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
+    <script src="/assets/main/js/libs/datepicker/bootstrap-datepicker.min.js"></script>
+    <script src="/assets/main/js/libs/datepicker/locale/bootstrap-datepicker.id.min.js"></script>
+    <script src="/assets/main/libs/datatables/datatables.min.js"></script>
+    <script src="/assets/main/libs/sweetalert2/sweetalert2.all.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#schedule_date').datepicker({
