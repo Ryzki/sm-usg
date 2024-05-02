@@ -77,48 +77,52 @@
                                         </button>
                                     </td>
                                     <td class="text-secondary" data-label="Status Kesehatan">
-                                        @if ($user->historyAncs && $user->latestHistoryAncs->stat_skrining_preklampsia === 1)
-                                            <span class="status status-success mt-2 fs-6">
-                                                <span class="status-dot status-dot-animated"></span>
-                                                {{ $user->latestHistoryAncs->stat_skrining_preklampsia_label }}
-                                            </span>
-                                        @elseif ($user->historyAncs && $user->latestHistoryAncs->stat_skrining_preklampsia === 2)
-                                            <span class="status status-warning mt-2 fs-6">
-                                                <span class="status-dot status-dot-animated"></span>
-                                                {{ $user->latestHistoryAncs->stat_skrining_preklampsia_label }}
-                                            </span>
-                                        @elseif ($user->historyAncs && $user->latestHistoryAncs->stat_skrining_preklampsia === 3)
-                                            <span class="status status-danger mt-2 fs-6">
-                                                <span class="status-dot status-dot-animated"></span>
-                                                {{ $user->latestHistoryAncs->stat_skrining_preklampsia_label }}
-                                            </span>
-                                        @elseif(empty($user->historyAncs))
+                                        @if ($user->historyAncs && $user->latestHistoryAncs)
+                                            @if ($user->latestHistoryAncs->stat_skrining_preklampsia === 1)
+                                                <span class="status status-success mt-2 fs-6">
+                                                    <span class="status-dot status-dot-animated"></span>
+                                                    {{ $user->latestHistoryAncs->stat_skrining_preklampsia_label }}
+                                                </span>
+                                            @elseif ($user->latestHistoryAncs->stat_skrining_preklampsia === 2)
+                                                <span class="status status-warning mt-2 fs-6">
+                                                    <span class="status-dot status-dot-animated"></span>
+                                                    {{ $user->latestHistoryAncs->stat_skrining_preklampsia_label }}
+                                                </span>
+                                            @elseif ($user->latestHistoryAncs->stat_skrining_preklampsia === 3)
+                                                <span class="status status-danger mt-2 fs-6">
+                                                    <span class="status-dot status-dot-animated"></span>
+                                                    {{ $user->latestHistoryAncs->stat_skrining_preklampsia_label }}
+                                                </span>
+                                            @endif
+
+                                            @if ($user->latestHistoryAncs->stat_risk_pregnancy_of_ced)
+                                                <span class="status status-danger mt-2 fs-6">
+                                                    <span class="status-dot status-dot-animated"></span>
+                                                    Resiko Kehamilan KEK
+                                                </span>
+                                            @endif
+
+                                            @if ($user->latestHistoryAncs->stat_risk_preeclamsia)
+                                                <span class="status status-danger mt-2 fs-6">
+                                                    <span class="status-dot status-dot-animated"></span>
+                                                    Resiko Preklamsia
+                                                </span>
+                                            @endif
+
+                                            @if ($user->latestHistoryAncs->stat_risk_anemia)
+                                                <span class="status status-danger mt-2 fs-6">
+                                                    <span class="status-dot status-dot-animated"></span>
+                                                    Resiko Anemia
+                                                </span>
+                                            @endif
+                                        @else
                                             <span class="status status-success mt-2 fs-6">
                                                 <span class="status-dot status-dot-animated"></span>
                                                 Sehat
                                             </span>
                                         @endif
 
-                                        @if ($user->latestHistoryAncs->stat_risk_pregnancy_of_ced)
-                                            <span class="status status-danger mt-2 fs-6">
-                                                <span class="status-dot status-dot-animated"></span>
-                                                Resiko Kehamilan KEK
-                                            </span>
-                                        @endif
 
-                                        @if ($user->latestHistoryAncs->stat_risk_preeclamsia)
-                                            <span class="status status-danger mt-2 fs-6">
-                                                <span class="status-dot status-dot-animated"></span>
-                                                Resiko Preklamsia
-                                            </span>
-                                        @endif
-
-                                        @if ($user->latestHistoryAncs->stat_risk_anemia)
-                                            <span class="status status-danger mt-2 fs-6">
-                                                <span class="status-dot status-dot-animated"></span>
-                                                Resiko Anemia
-                                            </span>
-                                        @endif
                                     </td>
                                     <td>
                                         <div class="btn-list flex-nowrap">
