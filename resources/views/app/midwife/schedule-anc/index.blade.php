@@ -31,7 +31,6 @@
                                 <tr>
                                     <th>Nama</th>
                                     <th>Kunjungan</th>
-                                    <th>Trimester</th>
                                     <th>Tanggal</th>
                                     <th>Status</th>
                                     <th>Dibuat</th>
@@ -145,21 +144,6 @@
                         name: "visit.name",
                     },
                     {
-                        data: "visit.category_trimester",
-                        name: "visit.category_trimester",
-                        render: function(data) {
-                            if (data === 1) {
-                                return 'Trimester ' + data;
-                            } else if (data === 2) {
-                                return 'Trimester ' + data;
-                            } else if (data === 3) {
-                                return 'Trimester ' + data;
-                            }
-                        },
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
                         data: "schedule_date",
                         name: "schedule_date",
                         render: function(data) {
@@ -213,15 +197,12 @@
                                 $(this).attr('data-label', 'Kunjungan');
                                 break;
                             case 2:
-                                $(this).attr('data-label', 'Trimester');
-                                break;
-                            case 3:
                                 $(this).attr('data-label', 'Tanggal');
                                 break;
-                            case 4:
+                            case 3:
                                 $(this).attr('data-label', 'Status');
                                 break;
-                            case 5:
+                            case 4:
                                 $(this).attr('class', 'text-secondary');
                                 $(this).attr('data-label', 'Dibuat');
                                 break;
