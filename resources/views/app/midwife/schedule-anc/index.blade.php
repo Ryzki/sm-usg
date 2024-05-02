@@ -147,6 +147,15 @@
                     {
                         data: "visit.category_trimester",
                         name: "visit.category_trimester",
+                        render: function(data) {
+                            if (data === 1) {
+                                return 'Trimester ' + data;
+                            } else if (data === 2) {
+                                return 'Trimester ' + data;
+                            } else if (data === 3) {
+                                return 'Trimester ' + data;
+                            }
+                        },
                         orderable: false,
                         searchable: false
                     },

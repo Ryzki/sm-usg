@@ -43,15 +43,6 @@ class ScheduleController extends Controller
                         ';
                     }
                 })
-                ->editColumn('visit.category_trimester', function ($data) {
-                    if ($data->visit->category_trimester === 1) {
-                        return 'Trimester 1';
-                    } else if ($data->visit->category_trimester === 2) {
-                        return 'Trimester 2';
-                    } else if ($data->visit->category_trimester === 3) {
-                        return 'Trimester 3';
-                    }
-                })
                 ->editColumn('created_at_humans', function ($data) {
                     return $data->created_at->diffForHumans();
                 })
