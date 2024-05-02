@@ -133,7 +133,7 @@
                 serverSide: true,
                 ajax: "{{ route('midwife.schedule-users.index') }}",
                 order: [
-                    [5, 'desc']
+                    [4, 'desc']
                 ],
                 columns: [{
                         data: "user.full_name",
