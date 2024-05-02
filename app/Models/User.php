@@ -58,7 +58,7 @@ class User extends Authenticatable
 
     public function latestHistoryAncs(): HasOne
     {
-        return $this->hasOne(HistoryAnc::class)->latestOfMany();
+        return $this->hasOne(HistoryANC::class)->latestOfMany();
     }
 
     public function getFullAdressAttribute()
