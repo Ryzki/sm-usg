@@ -13,9 +13,10 @@ class ChatController extends Controller
     public function index()
     {
         $user = User::find(Auth::user()->id)->first();
-        $midWife = User::where('id', $user->midwife_id)->first();
+        $midwife = User::where('id', $user->midwife_id)->first();
+        $doctors = User::where('role_id', 3)->get();
 
-        return view('app.user.chat', compact('midWife'));
+        return view('app.user.chat', compact('midwife', 'doctors'));
     }
 
     public function create()

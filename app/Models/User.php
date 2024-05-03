@@ -78,4 +78,20 @@ class User extends Authenticatable
 
         return $nomor_telepon;
     }
+
+    function getDetermineRoleFromFullNameAttribute()
+    {
+        $nameParts = explode(" ", $this->full_name);
+        $firstName = $nameParts[0];
+
+        if (strtolower($firstName) === "dr.") {
+            return "Dokter Umum";
+        } elseif (strtolower($firstName) === "drg.") {
+            return "Dokter Gigi";
+        } elseif (strpos($this->full_name, "S.GZ") !== false) {
+            return "Petugas Gizi";
+        } else {
+            return null;
+        }
+    }
 }

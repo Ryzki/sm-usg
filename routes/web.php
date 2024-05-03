@@ -47,7 +47,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::middleware('role:Dokter')->name('doctor.')->prefix('/doctor')->group(function () {
-        Route::get('/dashboard', fn () => view('app.midwife.index'))->name('dashboard');
+        Route::get('/dashboard', fn () => view('app.doctor.index'))->name('dashboard');
         Route::get('/verified', fn () => view('app.doctor.index'))->name('verified');
     });
 
