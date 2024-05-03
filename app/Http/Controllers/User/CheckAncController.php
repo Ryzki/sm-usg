@@ -15,7 +15,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PreeclampsiaScreening;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Redirect;
 use App\Models\PatientPreeclamsiaScreenings;
 
 class CheckAncController extends Controller
@@ -125,7 +124,7 @@ class CheckAncController extends Controller
                     'fetal_heartbeat' => $request->input('fetal_heartbeat'),
                     'note' => $request->input('note'),
                     'stat_risk_pregnancy_of_ced' => $request->input('lila') < 23.5,
-                    'stat_risk_preeclamsia' => $request->input('sistolik') > 140 || $request->input('diastolik') > 90,
+                    'stat_risk_preeclamsia' => $request->input('sistolik') >= 140 || $request->input('diastolik') >= 90,
                     'stat_risk_anemia' => $request->input('hemoglobin_level') < 11,
                 ];
 
@@ -195,8 +194,6 @@ class CheckAncController extends Controller
             }])
             ->where('abbreviation', $name_anc)
             ->first();
-
-        // return response()->json($detailVisit);
 
         if (count($detailVisit->scheduleAncs) == 0 && count($detailVisit->historyAncs) == 0) {
             return redirect()->route('user.check-anc.index')->with('message', 'Terjadi kesalahan pengguna');

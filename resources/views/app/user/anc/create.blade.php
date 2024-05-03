@@ -126,9 +126,6 @@
                                     @error('sistolik', 'diastolik')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                    {{-- @error('diastolik')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror --}}
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -292,7 +289,7 @@
                 var diastolikValue = parseInt($('#diastolik').val());
                 var alertTD = $('#alert-td');
 
-                if (sistolikValue > 140 || diastolikValue > 90) {
+                if (sistolikValue >= 140 || diastolikValue >= 90) {
                     alertTD.removeClass('d-none');
                 } else {
                     alertTD.addClass('d-none');
