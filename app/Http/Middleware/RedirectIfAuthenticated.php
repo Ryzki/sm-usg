@@ -23,10 +23,30 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                // return redirect(RouteServiceProvider::HOME);
+
+                $user = Auth::user();
+                $redirectRoute = $this->getRedirectRouteForRole($user->role_id);
+                return redirect($redirectRoute);
             }
         }
 
         return $next($request);
+    }
+
+    protected function getRedirectRouteForRole($roleId)
+    {
+        switch ($roleId) {
+            case 1:
+                return RouteServiceProvider::USER;
+            case 2:
+                return RouteServiceProvider::MIDWIFE;
+            case 3:
+                return RouteServiceProvider::DOCTOR;
+            case 4:
+                return RouteServiceProvider::ADMIN;
+            default:
+                return RouteServiceProvider::HOME;
+        }
     }
 }
