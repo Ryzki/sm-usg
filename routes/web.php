@@ -17,6 +17,9 @@ use App\Http\Controllers\User\BloodSupplementController;
 use App\Http\Controllers\Midwife\DashboardController as MidwifeDashboard;
 use App\Http\Controllers\Midwife\ScheduleController;
 
+//Namespace DOCTOR
+use App\Http\Controllers\Doctor\DashboardController as DoctorController;
+
 Route::middleware('guest')->group(function () {
     Route::get('/', [LoginController::class, 'index'])->name('login');
     Route::post('/', [LoginController::class, 'authenticate']);
@@ -47,8 +50,9 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::middleware('role:Dokter')->name('doctor.')->prefix('/doctor')->group(function () {
-        Route::get('/dashboard', fn () => view('app.doctor.index'))->name('dashboard');
-        Route::get('/verified', fn () => view('app.doctor.index'))->name('verified');
+        Route::get('/dashboard', [DoctorController::class, 'index'])->name('dashboard');
+        Route::post('/get-schedule-user', [MidwifeDashboard::class, 'getScheduleUser'])->name('get_schedule_user');
+        Route::get('/control-users', [DoctorController::class, 'controlAllUsers'])->name('control_all_users');
     });
 
     Route::get('/verification', [VerificationController::class, 'index'])->name('verification')->middleware('verified');
