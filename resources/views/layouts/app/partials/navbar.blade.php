@@ -215,6 +215,68 @@
                             </li>
                         </ul>
                     @endcan
+                    @can('Admin')
+                        <ul class="navbar-nav">
+                            <li class="nav-item {{ Route::is('admin.dashboard') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.dashboard') }}">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-home">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
+                                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+                                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">
+                                        Dashboard
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown {{ Route::is(['admin.users*']) ? 'active' : '' }}">
+                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-database">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 6m-8 0a8 3 0 1 0 16 0a8 3 0 1 0 -16 0" />
+                                            <path d="M4 6v6a8 3 0 0 0 16 0v-6" />
+                                            <path d="M4 12v6a8 3 0 0 0 16 0v-6" />
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">
+                                        Data Master
+                                    </span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item {{ Route::is('admin.users*') ? 'active' : '' }}"
+                                        href="{{ route('admin.users.index') }}">
+                                        Data Pengguna
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        Data Kelurahan
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        Data Daerah
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        Data Pemetaan Bidan
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        Data Kategori Preklamsia
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        Data Role
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    @endcan
                 @else
                     <ul class="navbar-nav">
                         <li class="nav-item {{ Route::is('verification') ? 'active' : '' }}">

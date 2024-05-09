@@ -20,6 +20,10 @@ use App\Http\Controllers\Midwife\ScheduleController;
 //Namespace DOCTOR
 use App\Http\Controllers\Doctor\DashboardController as DoctorController;
 
+//Namespace ADMIN
+use App\Http\Controllers\Admin\DashboardController as AdminController;
+use App\Http\Controllers\Admin\UserControler;
+
 Route::middleware('guest')->group(function () {
     Route::get('/', [LoginController::class, 'index'])->name('login');
     Route::post('/', [LoginController::class, 'authenticate']);
@@ -53,6 +57,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [DoctorController::class, 'index'])->name('dashboard');
         Route::post('/get-schedule-user', [MidwifeDashboard::class, 'getScheduleUser'])->name('get_schedule_user');
         Route::get('/control-users', [DoctorController::class, 'controlAllUsers'])->name('control_all_users');
+    });
+
+    Route::middleware('role:Admin')->name('admin.')->prefix('/admin')->group(function () {
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+        Route::prefix('/users')->controller(UserControler::class)->group(function () {
+            Route::get('/', 'index')->name('users.index');
+            Route::post('/users/store', 'store')->name('users.store');
+            Route::post('/change-role-user', [UserControler::class, 'changeRole'])->name('changeRole');
+        });
     });
 
     Route::get('/verification', [VerificationController::class, 'index'])->name('verification')->middleware('verified');

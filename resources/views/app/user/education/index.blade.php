@@ -135,7 +135,8 @@
                             <div class="row g-2 align-items-center">
                                 <div class="col-auto">
                                     <span class="avatar avatar-xl"
-                                        style="background-image: url(https://cdn.dribbble.com/users/5461628/screenshots/15670259/media/13632f1af02f3ac6bcc6c3644478619c.jpg)"></span>
+                                        style="background-image: url(https://cdn.dribbble.com/users/5461628/screenshots/15670259/media/13632f1af02f3ac6bcc6c3644478619c.jpg)">
+                                    </span>
                                 </div>
                                 <div class="col">
                                     <h4 class="card-title m-0">

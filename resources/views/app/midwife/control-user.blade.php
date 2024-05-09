@@ -39,12 +39,13 @@
                     <table class="table table-vcenter card-table table-mobile-md table-striped">
                         <thead>
                             <tr class="text-center">
-                                <th>Nama</th>
-                                <th>Alamat Domisili</th>
-                                <th>No Handphone</th>
-                                <th>Jadwal ANC</th>
-                                <th>Status Kesehatan</th>
-                                <th class="w-1"></th>
+                                <th style="width: 10%">Nama</th>
+                                <th style="width: 30%">Alamat Domisili</th>
+                                <th style="width: 5%">No Handphone</th>
+                                <th style="width: 5%">Jadwal ANC</th>
+                                <th style="width: 30%">Status Kesehatan</th>
+                                <th style="width: 15%">Materi</th>
+                                <th style="width: 5%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -121,10 +122,27 @@
                                                 Sehat
                                             </span>
                                         @endif
-
-
                                     </td>
-                                    <td>
+                                    <td class="text-secondary" data-label="Materi">
+                                        {{-- <div class="text-center">
+                                            <span class="status status-success mt-2 fs-6">
+                                                <span class="status-dot status-dot-animated"></span>
+                                                Complete
+                                            </span>
+                                        </div> --}}
+                                        <div class="row align-items-center">
+                                            <div class="col-auto mr-3 col-lg-3 p-0">80%</div>
+                                            <div class="col col-lg-9 p-0">
+                                                <div class="progress" style="width: 6rem">
+                                                    <div class="progress-bar" style="width: 80%" role="progressbar"
+                                                        aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                                                        aria-label="60% Complete">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td data-label="Aksi">
                                         <div class="btn-list flex-nowrap">
                                             <a class="btn" href="https://wa.me/{{ $user->phone_number }}"
                                                 target="_blank">
@@ -138,10 +156,6 @@
                     </table>
                 </div>
             </div>
-
-
-
-
             @if ($users->lastPage() > 1)
                 <div class="card align-items-center mt-2">
                     <ul class="pagination mt-3">
