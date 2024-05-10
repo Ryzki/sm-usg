@@ -9,6 +9,8 @@ class SubDistrict extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name'];
+
     public function areas()
     {
         return $this->hasMany(Area::class);

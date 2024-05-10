@@ -22,6 +22,7 @@ use App\Http\Controllers\Doctor\DashboardController as DoctorController;
 
 //Namespace ADMIN
 use App\Http\Controllers\Admin\DashboardController as AdminController;
+use App\Http\Controllers\Admin\SubDistricController;
 use App\Http\Controllers\Admin\UserControler;
 
 Route::middleware('guest')->group(function () {
@@ -65,6 +66,11 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', 'index')->name('users.index');
             Route::post('/users/store', 'store')->name('users.store');
             Route::post('/change-role-user', [UserControler::class, 'changeRole'])->name('changeRole');
+        });
+        Route::prefix('/sub-district')->controller(SubDistricController::class)->group(function () {
+            Route::get('/', 'index')->name('sub-district.index');
+            Route::post('/store', 'store')->name('sub-district.store');
+            Route::put('/update/{subdistrict}', 'update')->name('sub-district.update');
         });
     });
 

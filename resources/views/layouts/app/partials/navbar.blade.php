@@ -235,7 +235,8 @@
                                     </span>
                                 </a>
                             </li>
-                            <li class="nav-item dropdown {{ Route::is(['admin.users*']) ? 'active' : '' }}">
+                            <li
+                                class="nav-item dropdown {{ Route::is(['admin.users*', 'admin.sub-district*']) ? 'active' : '' }}">
                                 <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -258,7 +259,8 @@
                                         href="{{ route('admin.users.index') }}">
                                         Data Pengguna
                                     </a>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item  {{ Route::is('admin.sub-district*') ? 'active' : '' }}"
+                                        href="{{ route('admin.sub-district.index') }}">
                                         Data Kelurahan
                                     </a>
                                     <a class="dropdown-item" href="#">

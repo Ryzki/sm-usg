@@ -45,7 +45,7 @@ class UserControler extends Controller
         }
 
         $roles = Role::whereNot('id', 4)->get();
-        return view('app.admin.users.index', [
+        return view('app.admin.users', [
             'roles' => $roles
         ]);
     }
