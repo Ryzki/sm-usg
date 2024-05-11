@@ -21,7 +21,7 @@ class UserControler extends Controller
             return DataTables::eloquent($users)
                 ->addIndexColumn()
                 ->addColumn('action', function ($data) {
-                    if ($data->verified === 0) {
+                    if ($data->verified == 0) {
                         return '
                             <div class="btn-list flex-nowrap text-center">
                                 <a class="btn btn-icon btn-warning" id="btnModalChangeRole" data-role="' . $data->role_id . '" data-name="' . $data->full_name . '" data-id="' . $data->id . '" >
