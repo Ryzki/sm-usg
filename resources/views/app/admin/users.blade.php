@@ -171,12 +171,12 @@
                         data: 'verified',
                         name: 'verified',
                         render: function(data) {
-                            if (data === 1) {
+                            if (data == 1) {
                                 return `<span class="status status-success mt-2 fs-6">
                                             <span class="status-dot status-dot-animated"></span>
                                                 Verified
                                         </span>`;
-                            } else if (data === 0) {
+                            } else if (data == 0) {
                                 return `<span class="status status-danger mt-2 fs-6">
                                             <span class="status-dot status-dot-animated"></span>
                                                 Unverified
