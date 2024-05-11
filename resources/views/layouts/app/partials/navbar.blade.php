@@ -259,11 +259,12 @@
                                         href="{{ route('admin.users.index') }}">
                                         Data Pengguna
                                     </a>
-                                    <a class="dropdown-item  {{ Route::is('admin.sub-district*') ? 'active' : '' }}"
+                                    <a class="dropdown-item {{ Route::is('admin.sub-district*') ? 'active' : '' }}"
                                         href="{{ route('admin.sub-district.index') }}">
                                         Data Kelurahan
                                     </a>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item {{ Route::is('admin.areas*') ? 'active' : '' }}"
+                                        href="{{ route('admin.areas.index') }}">
                                         Data Daerah
                                     </a>
                                     <a class="dropdown-item" href="#">

@@ -1,6 +1,6 @@
 @extends('layouts.app.main')
 
-@section('title', 'Dashboard')
+@section('title', 'Data Pengguna')
 
 @section('content')
     <div class="page-header">
@@ -62,30 +62,6 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Role</label>
-                            {{-- <div class="form-selectgroup">
-                                <label class="form-selectgroup-item">
-                                    <input type="radio" name="icons" value="1" class="form-selectgroup-input"
-                                        checked="">
-                                    <span class="form-selectgroup-label">
-                                        <i class="fa-solid fa-person-pregnant fa-xl"></i>
-                                        Ibu Hamil
-                                    </span>
-                                </label>
-                                <label class="form-selectgroup-item">
-                                    <input type="radio" name="icons" value="user" class="form-selectgroup-input">
-                                    <span class="form-selectgroup-label">
-                                        <i class="fa-solid fa-user-nurse"></i>
-                                        Bidan
-                                    </span>
-                                </label>
-                                <label class="form-selectgroup-item">
-                                    <input type="radio" name="icons" value="circle" class="form-selectgroup-input">
-                                    <span class="form-selectgroup-label">
-                                        <i class="fa-solid fa-user-doctor"></i>
-                                        Doctor
-                                    </span>
-                                </label>
-                            </div> --}}
                             <select class="form-select" name="user_role" id="user_role">
                                 @foreach ($roles as $role)
                                     <option value="{{ $role->id }}">{{ $role->name }}</option>
@@ -129,7 +105,7 @@
                         <div class="mb-3">
                             <label class="form-label">Role</label>
                             <select class="form-select" name="role" id="role">
-                                <option selected>Pilih Role</option>
+                                <option value="" selected>Pilih Role</option>
                                 @foreach ($roles as $role)
                                     <option value="{{ $role->id }}">{{ $role->name }}</option>
                                 @endforeach
@@ -227,7 +203,7 @@
             $('#dt-search-1').removeClass('form-control-sm').addClass('form-control-md');
 
             // Show Modal
-            $(document).on('click', '#btnChangeRole', function(e) {
+            $(document).on('click', '#btnModalChangeRole', function(e) {
                 e.preventDefault();
 
                 $('#formChangeRole').trigger('reset');

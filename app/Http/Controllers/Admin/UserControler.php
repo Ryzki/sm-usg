@@ -24,7 +24,7 @@ class UserControler extends Controller
                     if ($data->verified === 0) {
                         return '
                             <div class="btn-list flex-nowrap text-center">
-                                <a class="btn btn-icon btn-warning" id="btnChangeRole" data-role="' . $data->role_id . '" data-name="' . $data->full_name . '" data-id="' . $data->id . '" >
+                                <a class="btn btn-icon btn-warning" id="btnModalChangeRole" data-role="' . $data->role_id . '" data-name="' . $data->full_name . '" data-id="' . $data->id . '" >
                                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-accessible"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M10 16.5l2 -3l2 3m-2 -3v-2l3 -1m-6 0l3 1" /><circle cx="12" cy="7.5" r=".5" fill="currentColor" /></svg>
                                 </a>
                             </div>

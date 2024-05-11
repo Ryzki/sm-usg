@@ -1,13 +1,13 @@
 @extends('layouts.app.main')
 
-@section('title', 'Data Kelurahan')
+@section('title', 'Data Daerah')
 
 @section('content')
     <div class="page-header">
         <div class="container-xl">
             <div class="row g-2 align-items-center">
                 <div class="col">
-                    <div class="page-title">Data Pengguna</div>
+                    <div class="page-title">Data Daerah</div>
                 </div>
             </div>
         </div>
@@ -15,18 +15,26 @@
     <div class="page-body">
         <div class="container-xl">
             <div class="row row-cards">
-                <div class="col-lg-6 col-md-12">
+                <div class="col-lg-4 col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Tambah Kelurahan</h3>
+                            <h3 class="card-title">Tambah Daerah</h3>
                         </div>
                         <div class="card-body">
-                            <form id="formSubDistrict">
-                                <input type="hidden" id="id_subdistrict" name="id_subdistrict">
+                            <form id="formAreas">
+                                <input type="hidden" id="id_area" name="id_area">
                                 <div class="mb-3">
                                     <label class="form-label">Kelurahan</label>
-                                    <input type="text" class="form-control" id="name_subdistrict"
-                                        name="name_subdistrict">
+                                    <select class="form-select" id="sub_district" name="sub_district">
+                                        <option value="" selected>Pilih Kelurahan</option>
+                                        @foreach ($subDistricts as $subDistrict)
+                                            <option value="{{ $subDistrict->id }}">{{ $subDistrict->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">RW</label>
+                                    <input type="number" class="form-control" id="RA" name="RA">
                                 </div>
                             </form>
                         </div>
@@ -35,18 +43,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-12">
+                <div class="col-lg-8 col-md-12">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
-                            <h3 class="card-title">Data Kelurahan</h3>
+                            <h3 class="card-title">Data Daerah</h3>
                         </div>
-                        <table class="table table-striped card-table table-vcenter table-responsive"
-                            id="table-subdistricts">
+                        <table class="table table-striped card-table table-vcenter table-responsive" id="table-areas">
                             <thead>
                                 <tr>
                                     <th class="w-1">#</th>
                                     <th>Kelurahan</th>
+                                    <th>RW</th>
                                     <th>Status</th>
+                                    <th>Dibuat</th>
+                                    <th>Diubah</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -78,10 +88,13 @@
     <script src="/assets/main/libs/sweetalert2/sweetalert2.all.min.js"></script>
     <script>
         $(document).ready(function() {
-            $("#table-subdistricts").dataTable({
+            $("#table-areas").dataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('admin.sub-district.index') }}",
+                ajax: "{{ route('admin.areas.index') }}",
+                order: [
+                    [4, 'desc']
+                ],
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
@@ -89,8 +102,12 @@
                         searchable: false,
                     },
                     {
-                        data: 'name',
-                        name: 'name'
+                        data: 'sub_district.name',
+                        name: 'subDistrict.name'
+                    },
+                    {
+                        data: 'residential_association',
+                        name: 'residential_association'
                     },
                     {
                         data: 'status',
@@ -104,10 +121,18 @@
                             } else {
                                 return `<span class="status status-danger mt-2 fs-6">
                                             <span class="status-dot status-dot-animated"></span>
-                                                Non-Active
+                                                NonActive
                                         </span>`;
                             }
                         }
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'created_at'
+                    },
+                    {
+                        data: 'updated_at',
+                        name: 'updated_at'
                     },
                     {
                         data: 'action',
@@ -129,17 +154,22 @@
 
             $('#btnSubmit').on('click', function(e) {
                 e.preventDefault();
-                // Pastikan Anda mendapatkan nilai dari input dengan ID 'id_subdistrict'
-                var idSubDistrict = $('#id_subdistrict').val();
-                var url = idSubDistrict ?
-                    "{{ route('admin.sub-district.update', ':id') }}".replace(':id', idSubDistrict) :
-                    "{{ route('admin.sub-district.store') }}";
+
+                $('input').removeClass('is-invalid');
+                $('select').removeClass('is-invalid');
+                $('.custon-invalid-feedback').remove();
+
+                var idArea = $('#id_area').val();
+                var url = idArea ?
+                    "{{ route('admin.areas.update', ':id') }}".replace(':id', idArea) :
+                    "{{ route('admin.areas.store') }}";
                 var data = {
-                    subdistrict: $('#name_subdistrict').val(),
+                    subdistrict: $('#sub_district').val(),
+                    RA: $('#RA').val()
                 }
 
-                if (idSubDistrict) {
-                    data.id = idSubDistrict;
+                if (idArea) {
+                    data.id = idArea;
                     data._method = 'PUT';
                 }
 
@@ -156,12 +186,12 @@
                                 showConfirmButton: false,
                                 timer: 1500
                             }).then(() => {
-                                $('.card-title').html('Tambah Kelurahan');
-                                $('#id_subdistrict').val('');
-                                $('#formSubDistrict').trigger('reset');
-                                $('#table-subdistricts').DataTable().ajax.reload();
+                                $('.card-title').html('Tambah Daerah');
+                                $('#id_area').val('');
+                                $('#formAreas').trigger('reset');
+                                $('#table-areas').DataTable().ajax.reload();
                             });
-                        } else if (response.status) {
+                        } else if (!response.status) {
                             Swal.fire({
                                 icon: "error",
                                 title: response.message,
@@ -172,11 +202,19 @@
                     error: function(xhr, status, error) {
                         var response = xhr.responseJSON.errors
                         if (response.subdistrict) {
-                            $('#name_subdistrict').addClass('is-invalid');
+                            $('#sub_district').addClass('is-invalid');
                             var invalidFeedback =
                                 '<div class="custon-invalid-feedback text-danger d-block mb-2"><small>' +
                                 response.subdistrict[0] + '</small></div>';
-                            $('#name_subdistrict').after(invalidFeedback);
+                            $('#sub_district').after(invalidFeedback);
+                        }
+
+                        if (response.RA) {
+                            $('#RA').addClass('is-invalid');
+                            var invalidFeedback =
+                                '<div class="custon-invalid-feedback text-danger d-block mb-2"><small>' +
+                                response.RA[0] + '</small></div>';
+                            $('#RA').after(invalidFeedback);
                         }
                     }
                 });
@@ -185,14 +223,16 @@
             $(document).on('click', '#btnEdit', function(e) {
                 e.preventDefault();
 
-                $('#formSubDistrict').trigger('reset');
+                $('#formAreas').trigger('reset');
 
                 const id = $(this).data('id');
-                const name = $(this).data('name');
+                const subdistrict = $(this).data('subdistrict');
+                const ra = $(this).data('ra');
 
-                $('.card-title').html('Edit Kelurahan');
-                $('#id_subdistrict').val(id);
-                $('#name_subdistrict').val(name);
+                $('.card-title').html('Edit Daerah');
+                $('#id_area').val(id);
+                $('#sub_district').val(subdistrict);
+                $('#RA').val(ra);
             })
 
             $(document).on('click', '#btnChangeStat', function(e) {
@@ -203,7 +243,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('admin.sub-district.change_stat') }}",
+                    url: "{{ route('admin.areas.change_stat') }}",
                     data: {
                         id: id,
                         stat: stat
@@ -217,13 +257,12 @@
                                 showConfirmButton: false,
                                 timer: 1500
                             }).then(() => {
-                                $('#table-subdistricts').DataTable().ajax.reload();
+                                $('#table-areas').DataTable().ajax.reload();
                             });
                         } else if (!response.status) {
                             Swal.fire({
                                 icon: "error",
                                 title: response.message,
-                                showConfirmButton: false,
                                 timer: 1500
                             });
                         }

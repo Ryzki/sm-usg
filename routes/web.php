@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AreaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\ChatController;
 use App\Http\Controllers\Auth\LoginController;
@@ -22,7 +23,7 @@ use App\Http\Controllers\Doctor\DashboardController as DoctorController;
 
 //Namespace ADMIN
 use App\Http\Controllers\Admin\DashboardController as AdminController;
-use App\Http\Controllers\Admin\SubDistricController;
+use App\Http\Controllers\Admin\SubDistrictController;
 use App\Http\Controllers\Admin\UserControler;
 
 Route::middleware('guest')->group(function () {
@@ -67,10 +68,18 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/users/store', 'store')->name('users.store');
             Route::post('/change-role-user', [UserControler::class, 'changeRole'])->name('changeRole');
         });
-        Route::prefix('/sub-district')->controller(SubDistricController::class)->group(function () {
+        Route::prefix('/sub-districts')->controller(SubDistrictController::class)->group(function () {
             Route::get('/', 'index')->name('sub-district.index');
             Route::post('/store', 'store')->name('sub-district.store');
             Route::put('/update/{subdistrict}', 'update')->name('sub-district.update');
+            Route::post('/change_stat', 'changeStat')->name('sub-district.change_stat');
+        });
+        Route::prefix('/areas')->controller(AreaController::class)->group(function () {
+            Route::get('/', 'index')->name('areas.index');
+            Route::post('/store', 'store')->name('areas.store');
+            Route::put('/update/{areas}', 'update')->name('areas.update');
+            Route::put('/delete/{areas}', 'destroy')->name('areas.destroy');
+            Route::post('/change_stat', 'changeStat')->name('areas.change_stat');
         });
     });
 
