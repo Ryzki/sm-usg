@@ -51,6 +51,11 @@ class User extends Authenticatable
         return $this->hasMany(HistoryANC::class);
     }
 
+    public function midwifeAreas()
+    {
+        return $this->hasMany(MidwifeArea::class, 'midwife_id');
+    }
+
     public function getAgeAttribute()
     {
         return Carbon::parse($this->date_of_birth)->age;

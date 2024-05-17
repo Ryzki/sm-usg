@@ -15,7 +15,7 @@
     <div class="page-body">
         <div class="container-xl">
             <div class="row row-cards">
-                <div class="col-lg-6 col-md-12">
+                <div class="col-lg-4 col-md-12">
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Tambah Kelurahan</h3>
@@ -35,7 +35,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-12">
+                <div class="col-lg-8 col-md-12">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <h3 class="card-title">Data Kelurahan</h3>
@@ -47,6 +47,8 @@
                                     <th class="w-1">#</th>
                                     <th>Kelurahan</th>
                                     <th>Status</th>
+                                    <th>Dibuat</th>
+                                    <th>Diubah</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -82,6 +84,9 @@
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('admin.sub-district.index') }}",
+                order: [
+                    [3, 'desc']
+                ],
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
@@ -108,6 +113,14 @@
                                         </span>`;
                             }
                         }
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'created_at'
+                    },
+                    {
+                        data: 'updated_at',
+                        name: 'updated_at'
                     },
                     {
                         data: 'action',

@@ -11,12 +11,14 @@ class MidwifeArea extends Model
 
     protected $table = 'midwife_areas';
 
-    public function User()
+    protected $fillable = ['midwife_id', 'area_id'];
+
+    public function user()
     {
-        return $this->belongsTo(User::class, 'midwife_id')->where('role_id', 2);
+        return $this->belongsTo(User::class, 'midwife_id');
     }
 
-    public function Areas()
+    public function areas()
     {
         return $this->belongsTo(Area::class, 'area_id');
     }

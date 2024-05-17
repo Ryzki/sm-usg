@@ -11,6 +11,8 @@ class PreeclampsiaScreening extends Model
 
     protected $table = 'preeclampsia_screenings';
 
+    protected $fillable = ['screening_name', 'risk_category', 'status'];
+
     public function patientPreeclampsiaScreenings()
     {
         return $this->hasMany(PatientPreeclamsiaScreenings::class);

@@ -23,6 +23,8 @@ use App\Http\Controllers\Doctor\DashboardController as DoctorController;
 
 //Namespace ADMIN
 use App\Http\Controllers\Admin\DashboardController as AdminController;
+use App\Http\Controllers\Admin\MidwifeAreaController;
+use App\Http\Controllers\Admin\PreeclampsiaController;
 use App\Http\Controllers\Admin\SubDistrictController;
 use App\Http\Controllers\Admin\UserControler;
 
@@ -65,7 +67,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
         Route::prefix('/users')->controller(UserControler::class)->group(function () {
             Route::get('/', 'index')->name('users.index');
-            Route::post('/users/store', 'store')->name('users.store');
+            Route::post('/store', 'store')->name('users.store');
             Route::post('/change-role-user', [UserControler::class, 'changeRole'])->name('changeRole');
         });
         Route::prefix('/sub-districts')->controller(SubDistrictController::class)->group(function () {
@@ -78,8 +80,20 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', 'index')->name('areas.index');
             Route::post('/store', 'store')->name('areas.store');
             Route::put('/update/{areas}', 'update')->name('areas.update');
-            Route::put('/delete/{areas}', 'destroy')->name('areas.destroy');
             Route::post('/change_stat', 'changeStat')->name('areas.change_stat');
+        });
+        Route::prefix('/midwife_areas')->controller(MidwifeAreaController::class)->group(function () {
+            Route::get('/', 'index')->name('midwife_areas.index');
+            Route::post('/store', 'store')->name('midwife_areas.store');
+            Route::delete('/delete/{midwife_areas}', 'destroy')->name('midwife_areas.destroy');
+            Route::post('/get_ra', 'getRa')->name('midwife_areas.get_ra');
+        });
+        Route::prefix('/category_preeclampsia')->controller(PreeclampsiaController::class)->group(function () {
+            Route::get('/', 'index')->name('preeclampsia.index');
+            Route::post('/store', 'store')->name('preeclampsia.store');
+            Route::put('/update/{category_preeclamsia}', 'update')->name('preeclampsia.update');
+            Route::delete('/delete/{category_preeclamsia}', 'destroy')->name('preeclampsia.destroy');
+            Route::post('/change_stat', 'changeStat')->name('preeclampsia.change_stat');
         });
     });
 

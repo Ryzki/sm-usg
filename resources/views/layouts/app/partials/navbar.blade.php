@@ -267,14 +267,13 @@
                                         href="{{ route('admin.areas.index') }}">
                                         Data Daerah
                                     </a>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item {{ Route::is('admin.midwife_areas*') ? 'active' : '' }}"
+                                        href="{{ route('admin.midwife_areas.index') }}">
                                         Data Pemetaan Bidan
                                     </a>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item {{ Route::is('admin.preeclampsia*') ? 'active' : '' }}"
+                                        href="{{ route('admin.preeclampsia.index') }}">
                                         Data Kategori Preklamsia
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        Data Role
                                     </a>
                                 </div>
                             </li>
