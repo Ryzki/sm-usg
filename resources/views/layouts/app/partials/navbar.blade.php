@@ -3,8 +3,8 @@
         <div class="navbar">
             <div class="container-xl">
                 @if (Auth::user()->verified)
-                    @can('PregnantMother')
-                        <ul class="navbar-nav">
+                    <ul class="navbar-nav">
+                        @can('PregnantMother')
                             <li class="nav-item {{ Route::is('user.dashboard') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('user.dashboard') }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -23,7 +23,6 @@
                                     </span>
                                 </a>
                             </li>
-
                             <li class="nav-item {{ Route::is('user.check-anc*') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('user.check-anc.index') }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -47,7 +46,6 @@
                                     </span>
                                 </a>
                             </li>
-
                             <li class="nav-item {{ Route::is('user.schedule-supplement*') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('user.schedule-supplement.index') }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -65,7 +63,6 @@
                                     </span>
                                 </a>
                             </li>
-
                             <li class="nav-item {{ Route::is('user.chat*') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('user.chat.index') }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block ">
@@ -85,7 +82,6 @@
                                     </span>
                                 </a>
                             </li>
-
                             <li class="nav-item {{ Route::is('user.education*') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('user.education.index') }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block ">
@@ -109,10 +105,8 @@
                                     </span>
                                 </a>
                             </li>
-                        </ul>
-                    @endcan
-                    @can('Midwife')
-                        <ul class="navbar-nav">
+                        @endcan
+                        @can('Midwife')
                             <li class="nav-item {{ Route::is('midwife.dashboard') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('midwife.dashboard') }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -172,10 +166,8 @@
                                     </span>
                                 </a>
                             </li>
-                        </ul>
-                    @endcan
-                    @can('Doctor')
-                        <ul class="navbar-nav">
+                        @endcan
+                        @can('Doctor')
                             <li class="nav-item {{ Route::is('doctor.dashboard') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('doctor.dashboard') }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -213,10 +205,8 @@
                                     </span>
                                 </a>
                             </li>
-                        </ul>
-                    @endcan
-                    @can('Admin')
-                        <ul class="navbar-nav">
+                        @endcan
+                        @can('Admin')
                             <li class="nav-item {{ Route::is('admin.dashboard') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('admin.dashboard') }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -277,8 +267,30 @@
                                     </a>
                                 </div>
                             </li>
-                        </ul>
-                    @endcan
+                        @endcan
+                        @cannot('PregnantMother')
+                            <li class="nav-item {{ Route::is('education*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('education.index') }}">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-book">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
+                                            <path d="M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
+                                            <path d="M3 6l0 13" />
+                                            <path d="M12 6l0 13" />
+                                            <path d="M21 6l0 13" />
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">
+                                        Data Materi
+                                    </span>
+                                </a>
+                            </li>
+                        @endcannot
+                    </ul>
                 @else
                     <ul class="navbar-nav">
                         <li class="nav-item {{ Route::is('verification') ? 'active' : '' }}">

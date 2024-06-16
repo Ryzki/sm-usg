@@ -20,9 +20,8 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <h3 class="card-title">Penjadwalan ANC</h3>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#modal-schedules">
-                                Tambah Artikel
+                            <button type="button" class="btn btn-primary" id="btnModalSchedule">
+                                Tambah Jadwal ANC
                             </button>
                         </div>
                         <table class="table table-striped card-table table-vcenter table-mobile-md table-responsive "
@@ -95,8 +94,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btnSubmit" data-bs-dismiss="modal">Simpan</button>
+                    <button type="button" class="btn btn-primary" id="btnSubmit">Simpan</button>
                 </div>
             </div>
         </div>
@@ -271,6 +269,12 @@
                 })
             });
 
+            $('#btnModalSchedule').on('click', function(e) {
+                e.preventDefault();
+
+                $('#modal-schedules').modal('show');
+            })
+
             $('#btnSubmit').on('click', function(e) {
                 e.preventDefault();
 
@@ -291,17 +295,13 @@
                     dataType: "JSON",
                     success: function(response) {
                         if (response.status) {
+                            $('#modal-schedules').modal('hide');
                             Swal.fire({
                                 position: 'center',
                                 icon: 'success',
                                 title: response.message,
                                 showConfirmButton: false,
                                 timer: 1500
-                            }).then(function() {
-                                $('#visit').val('');
-                                $('#pregnant_mother').val('');
-                                $('#schedule_date').val('');
-                                $('#table-schedules').DataTable().ajax.reload();
                             });
                         } else {
                             Swal.fire({
@@ -310,13 +310,12 @@
                                 title: response.message,
                                 showConfirmButton: false,
                                 timer: 1500
-                            }).then(function() {
-                                $('#visit').val('');
-                                $('#pregnant_mother').val('');
-                                $('#schedule_date').val('');
-                                $('#table-schedules').DataTable().ajax.reload();
                             });
                         }
+                        $('#visit').val('');
+                        $('#pregnant_mother').val('');
+                        $('#schedule_date').val('');
+                        $('#table-schedules').DataTable().ajax.reload();
                     },
                     error: function(xhr, status, error) {
 

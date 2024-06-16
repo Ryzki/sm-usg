@@ -204,36 +204,36 @@
 
                 $.ajax({
                     type: "POST",
-                    url: '{{ route('midwife.get_schedule_user') }}',
+                    url: "{{ route('midwife.get_schedule_user') }}",
                     data: {
                         'id': id
                     },
                     dataType: "JSON",
                     success: function(response) {
-                        console.log(response);
                         $('#schedule-anc').empty();
 
-                        // Iterasi melalui data dan tambahkan baris ke tbody
-                        $.each(response, function(index, schedule) {
-                            $html = `
-                                <tr>
-                                    <td> ` + schedule.visit.abbreviation + ` </td>
-                                    <td> ` + formatDate(schedule.schedule_date) + ` </td>
-                                    <td>` + (schedule.status === 1 ?
+                        const schedules = response;
+                        const scheduleList = document.getElementById('schedule-anc');
+
+                        schedules.forEach((schedule, index) => {
+                            const scheduleDate = formatDate(schedule.schedule_date);
+                            const statusBadge = schedule.status === 1 ?
                                 `<span class="badge bg-green text-green-fg">Sukses</span>` :
-                                `<span class="badge bg-primary text-green-fg">Menunggu</span>`
-                            ) + `</td>
-                                `;
-                            $('#schedule-anc').append(
-                                $html
-                            );
+                                `<span class="badge bg-primary text-green-fg">Menunggu</span>`;
+
+                            const html = `<tr>
+                                            <td>${schedule.visit.abbreviation}</td>
+                                            <td>${scheduleDate}</td>
+                                            <td>${statusBadge}</td>
+                                        </tr>`;
+
+                            scheduleList.innerHTML += html;
                         });
                     }
                 });
             });
 
             function formatDate(isoDateString) {
-                // Membuat objek Date dari string tanggal
                 var date = new Date(isoDateString);
 
                 // Array nama bulan

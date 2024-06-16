@@ -20,11 +20,8 @@ class CheckUserRole
         // Periksa apakah pengguna terotentikasi dan terverifikasi
         if (Auth::check() && Auth::user()->verified) {
             // Periksa apakah peran pengguna sesuai dengan salah satu dari peran yang diizinkan
-            foreach ($roles as $role) {
-                if (Auth::user()->role->name === $role) {
-                    // Jika peran pengguna cocok dengan salah satu dari peran yang diizinkan, lanjutkan permintaan
-                    return $next($request);
-                }
+            if (in_array(Auth::user()->role->name, $roles)) {
+                return $next($request);
             }
         } else {
             return redirect()->route(Auth::user()->role->verification_route);

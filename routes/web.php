@@ -1,32 +1,33 @@
 <?php
 
-use App\Http\Controllers\Admin\AreaController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\UserControler;
 use App\Http\Controllers\User\ChatController;
-use App\Http\Controllers\Auth\LoginController;
 
 // Namespace USER
+use App\Http\Controllers\Admin\AreaController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\User\CheckAncController;
 use App\Http\Controllers\User\DashboardController;
-use App\Http\Controllers\User\EducationController;
-use App\Http\Controllers\Auth\RegistrationController;
 
 //Namespace MIDWIFE
-use App\Http\Controllers\Midwife\ControlUserController;
-use App\Http\Controllers\User\BloodSupplementController;
-use App\Http\Controllers\Midwife\DashboardController as MidwifeDashboard;
+use App\Http\Controllers\User\EducationController;
 use App\Http\Controllers\Midwife\ScheduleController;
+use App\Http\Controllers\Admin\MidwifeAreaController;
+use App\Http\Controllers\Admin\SubDistrictController;
 
 //Namespace DOCTOR
-use App\Http\Controllers\Doctor\DashboardController as DoctorController;
+use App\Http\Controllers\Auth\RegistrationController;
 
 //Namespace ADMIN
-use App\Http\Controllers\Admin\DashboardController as AdminController;
-use App\Http\Controllers\Admin\MidwifeAreaController;
 use App\Http\Controllers\Admin\PreeclampsiaController;
-use App\Http\Controllers\Admin\SubDistrictController;
-use App\Http\Controllers\Admin\UserControler;
+use App\Http\Controllers\Midwife\ControlUserController;
+use App\Http\Controllers\User\BloodSupplementController;
+use App\Http\Controllers\Admin\DashboardController as AdminController;
+use App\Http\Controllers\Doctor\DashboardController as DoctorController;
+use App\Http\Controllers\Midwife\DashboardController as MidwifeDashboard;
+use Faker\Guesser\Name;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [LoginController::class, 'index'])->name('login');
@@ -47,7 +48,11 @@ Route::middleware(['auth'])->group(function () {
             ->name('check-anc.show');
         Route::resource('/schedule-supplement', BloodSupplementController::class);
         Route::resource('/chat', ChatController::class);
-        Route::resource('/education', EducationController::class);
+        Route::controller(EducationController::class)->group(function () {
+            Route::get('/education', 'indexForUser')->name('education.index');
+            Route::get('/education/{education}', 'showForUser')->name('education.show');
+            Route::post('/education/{education}/confirm', 'confirmTask')->name('education.confirmTask');
+        });
     });
 
     Route::middleware('role:Bidan')->name('midwife.')->prefix('/midwife')->group(function () {
@@ -95,6 +100,16 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/delete/{category_preeclamsia}', 'destroy')->name('preeclampsia.destroy');
             Route::post('/change_stat', 'changeStat')->name('preeclampsia.change_stat');
         });
+    });
+
+    Route::middleware('role:Admin,Bidan,Dokter')->prefix('/education')->controller(EducationController::class)->group(function () {
+        Route::get('/', 'index')->name('education.index');
+        Route::get('/create', 'create')->name('education.create');
+        Route::post('/store', 'store')->name('education.store');
+        Route::get('/{education}/edit', 'edit')->name('education.edit');
+        Route::put('/{education}', 'update')->name('education.update');
+        Route::delete('/{education}', 'delete')->name('education.delete');
+        // Route::get('/checkSlug', 'checkSlug')->name('education.checkSlug');
     });
 
     Route::get('/verification', [VerificationController::class, 'index'])->name('verification')->middleware('verified');
