@@ -263,7 +263,7 @@
             });
         });
     </script>
-    @if ($user->role_id === 1)
+    @if ($user->role_id == 1)
         <script>
             $(document).ready(function() {
                 $('#RA').on('change', function() {
