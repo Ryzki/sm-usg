@@ -165,7 +165,7 @@
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label class="form-label">Kelurahan</label>
-                                            @if ($user->role_id === 1)
+                                            @if ($user->role_id == 1)
                                                 <select
                                                     class="form-control form-select @error('sub_district') is-invalid @enderror"
                                                     id="sub_district" name="sub_district">
@@ -194,9 +194,9 @@
                                             <label class="form-label">Kecamatan</label>
                                             <input type="text"
                                                 class="form-control @error('district') is-invalid @enderror"
-                                                @if ($user->role_id === 1) value="Tembalang" @readonly(true) @endif
+                                                @if ($user->role_id == 1) value="Tembalang" @readonly(true) @endif
                                                 id="district" name="district"
-                                                @if ($user->role_id !== 1) value="{{ old('district') }}" @endif>
+                                                @if ($user->role_id != 1) value="{{ old('district') }}" @endif>
                                             @error('district')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -207,15 +207,15 @@
                                             <label class="form-label">Kota/Kabupaten</label>
                                             <input type="text"
                                                 class="form-control @error('city') is-invalid @enderror"
-                                                @if ($user->role_id === 1) value="Kota Semarang" @readonly(true) @endif
+                                                @if ($user->role_id == 1) value="Kota Semarang" @readonly(true) @endif
                                                 id="city" name="city"
-                                                @if ($user->role_id !== 1) value="{{ old('city') }}" @endif>
+                                                @if ($user->role_id != 1) value="{{ old('city') }}" @endif>
                                             @error('city')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
-                                    @if ($user->role_id === 1)
+                                    @if ($user->role_id == 1)
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label class="form-label">Penanggung Jawab</label>
