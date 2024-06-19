@@ -1,5 +1,7 @@
 @extends('layouts.auth.main')
 
+@section('title', 'Registrasi')
+
 @section('content')
     <div class="text-center">
         <a href="{{ route('login') }}" class="navbar-brand navbar-brand-autodark">
@@ -65,11 +67,11 @@
 @endsection
 
 @push('styles')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="/assets/main/libs/sweetalert2/sweetalert2.min.css">
 @endpush
 
 @push('script')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
+    <script src="/assets/main/libs/sweetalert2/sweetalert2.all.min.js"></script>
     <script>
         togglePasswordVisibility('#showPassword', '#password');
         togglePasswordVisibility('#showPasswordConfirmation', '#password_confirmation');

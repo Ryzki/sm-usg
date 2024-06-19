@@ -10,7 +10,7 @@
     </div>
     <div class="card card-md">
         <div class="card-body">
-            <h2 class="card-title h2 text-center mb-4 font-weight-bold" id="titleLogin">Login</h2>
+            <h2 class="card-title h2 text-center mb-4 font-weight-bold">Login</h2>
             <form autocomplete="off" novalidate>
                 <div class="mb-3">
                     <label class="form-label">Email</label>
@@ -47,9 +47,11 @@
 @endsection
 
 @push('styles')
+    <link rel="stylesheet" href="/assets/main/libs/sweetalert2/sweetalert2.min.css">
 @endpush
 
 @push('script')
+    <script src="/assets/main/libs/sweetalert2/sweetalert2.all.min.js"></script>
     <script>
         $(document).ready(function() {
             togglePasswordVisibility('#showPassword', '#password');
@@ -68,31 +70,25 @@
 
                 $.ajax({
                     type: "POST",
-                    url: '{{ route('login') }}',
+                    url: "{{ route('login') }}",
                     data: data,
                     dataType: "JSON",
                     success: function(response) {
                         if (response.status) {
-                            window.location.href = response.url;
+                            Swal.fire({
+                                icon: "success",
+                                title: response.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(() => {
+                                window.location.href = response.url;
+                            });
                         } else {
-                            $('#titleLogin').after(`<div class="alert alert-important alert-danger alert-dismissible" role="alert">
-                                <div class="d-flex">
-                                    <div>
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path>
-                                            <path d="M12 8v4"></path>
-                                            <path d="M12 16h.01"></path>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        ` + response.message + `
-                                    </div>
-                                </div>
-                                <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
-                            </div>`);
+                            Swal.fire({
+                                icon: "error",
+                                title: response.message,
+                                timer: 1000
+                            });
                         }
                     },
                     error: function(xhr, status, error) {
