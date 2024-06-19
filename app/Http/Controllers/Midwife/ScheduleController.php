@@ -30,7 +30,7 @@ class ScheduleController extends Controller
 
             return DataTables::eloquent($schedules)
                 ->addColumn('action', function ($data) {
-                    if ($data->status === 1) {
+                    if ($data->status == 1) {
                         return '-';
                     } else {
                         return '
