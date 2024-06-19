@@ -61,7 +61,6 @@
 @endsection
 
 @push('styles')
-    <link rel="stylesheet" href="/assets/main/libs/summernote/summernote-lite.min.css">
 @endpush
 
 @push('script')

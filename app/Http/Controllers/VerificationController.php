@@ -22,7 +22,7 @@ class VerificationController extends Controller
     public function postVerification(Request $request)
     {
         $rules = [
-            'nik' => 'required|min:1',
+            'nik' => 'required|min:16|max:16',
             'full_name' => 'required',
             'email' => 'required|email:dns',
             'place_of_birth' => 'required',
@@ -111,7 +111,7 @@ class VerificationController extends Controller
             DB::rollback();
             return redirect()
                 ->route('verification')
-                ->with('message', $th);
+                ->with('message', $th->getMessage());
         }
     }
 }

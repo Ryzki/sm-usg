@@ -18,7 +18,9 @@
         <div class="container-xl">
             <div class="card">
                 <div class="card-body">
-                    @if ($permissionBloodSupplement['minggu'] >= 16)
+                    @if (is_array($permissionBloodSupplement) &&
+                            isset($permissionBloodSupplement['minggu']) &&
+                            $permissionBloodSupplement['minggu'] >= 16)
                         <div id="calendar"></div>
                     @else
                         <div class="alert alert-warning" role="alert">
@@ -38,13 +40,13 @@
                                 <div>
                                     <h4 class="alert-title">Fitur ini di Non-Aktifkan Sementara</h4>
                                     <div class="text-secondary">
-                                        <p>Fitur akan Aktif ketika <strong>Usia Kandungan > 16 Minggu</strong>
-                                        </p>
+                                        <p>Fitur akan Aktif ketika <strong>Usia Kandungan > 16 Minggu</strong></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     @endif
+
                 </div>
             </div>
         </div>

@@ -21,26 +21,28 @@ class DashboardController extends Controller
         $idUser = Auth::user()->id;
 
         $user =  User::with('midwife')->find($idUser);
+        // Mengambil data di Table PregnancyHistory apakah sudah di set apa belum
         $pregnantHistory = PregnancyHistory::where('pregnant_mother_id', $idUser)
             ->where('status', 1)
             ->latest()
             ->first();
 
+        // Mengambil apakah ada Jadwal Kunjungan ANC yang tersedia di Hari ini
         $scheduleUser = ScheduleANC::with(['visit'])
             ->where('user_id', $user->id)
             ->whereDate('schedule_date', now()->toDateString())
             ->first();
 
+        // Kondisi Status Ibu Hamil
         $conditionUser = HistoryANC::where('user_id', $user->id)
             ->latest()
             ->first();
 
-        $pregnantHistory = PregnancyHistory::where('pregnant_mother_id', $idUser)
-            ->where('status', 1)
-            ->latest()
-            ->first();
+        $permissionBloodSupplement = false;
 
+        // Cek apakah ada terdapat Resiko di Ibu Hamil
         if (empty($conditionUser)) {
+            // Jika tidak ada, maka Kondisi User itu Sehat atau di SET nilainya 0
             $conditionUser = 0;
         }
 
@@ -50,12 +52,19 @@ class DashboardController extends Controller
             $gestationalAge = $usiaKehamilan['minggu'] . ' Minggu, ' . $usiaKehamilan['hari'] . ' Hari';
             $permissionBloodSupplement = $usiaKehamilan['minggu'] >= 16;
 
-            $pregnantHistoryFormatted = Carbon::createFromFormat('Y-m-d', $pregnantHistory->estimated_due_date)
-                ->translatedFormat('d F Y');
-            return view('app.user.index', compact('user', 'pregnantHistoryFormatted', 'gestationalAge', 'conditionUser', 'scheduleUser', 'permissionBloodSupplement'));
+            $pregnantHistoryFormatted = Carbon::createFromFormat('Y-m-d', $pregnantHistory->estimated_due_date)->translatedFormat('d F Y');
+
+            return view('app.user.index', compact(
+                'user',
+                'pregnantHistoryFormatted',
+                'gestationalAge',
+                'conditionUser',
+                'scheduleUser',
+                'permissionBloodSupplement'
+            ));
         }
 
-        return view('app.user.index', compact('user', 'conditionUser', 'scheduleUser'));
+        return view('app.user.index', compact('user', 'conditionUser', 'scheduleUser', 'permissionBloodSupplement'));
     }
 
     public function getBidan(Request $request)

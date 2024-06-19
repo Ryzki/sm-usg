@@ -15,7 +15,6 @@ class BloodSupplementController extends Controller
 {
     public function index(Request $request)
     {
-
         if ($request->ajax()) {
             $events = BloodSupplement::where('pregnant_mother_id', Auth::user()->id)
                 ->where('start_end', '>=', $request->only('start'))
@@ -34,7 +33,12 @@ class BloodSupplementController extends Controller
             ->latest()
             ->first();
 
-        $permissionBloodSupplement = MyHelper::hitungUsiaKehamilan($pregnantHistory->last_period_date);
+        $permissionBloodSupplement = null;
+
+        if ($pregnantHistory) {
+            $permissionBloodSupplement = MyHelper::hitungUsiaKehamilan($pregnantHistory->last_period_date);
+        }
+
 
         return view('app.user.schedule-supplement', compact('permissionBloodSupplement'));
     }

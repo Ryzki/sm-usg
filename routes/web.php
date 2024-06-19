@@ -109,7 +109,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{education}/edit', 'edit')->name('education.edit');
         Route::put('/{education}', 'update')->name('education.update');
         Route::delete('/{education}', 'delete')->name('education.delete');
-        // Route::get('/checkSlug', 'checkSlug')->name('education.checkSlug');
+        Route::get('/checkSlug', 'checkSlug')->name('education.checkSlug');
     });
 
     Route::get('/verification', [VerificationController::class, 'index'])->name('verification')->middleware('verified');
