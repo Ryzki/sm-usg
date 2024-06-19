@@ -51,7 +51,7 @@
                                                 class="text-decoration-none">{{ $education->title }}</a>
                                         </h4>
                                         <div class="text-secondary">
-                                            {{ $education->category_id === 1 ? 'Edukasi' : 'Materi' }}
+                                            {{ $education->category_id == 1 ? 'Edukasi' : 'Materi' }}
                                         </div>
                                     </div>
                                     <div class="col-auto">
