@@ -88,7 +88,7 @@
                         data: 'category_id',
                         name: 'category_id',
                         render: function(data) {
-                            if (data === 1) {
+                            if (data == 1) {
                                 return 'Edukasi';
                             }
                         }
@@ -101,7 +101,7 @@
                         data: 'is_active',
                         name: 'is_active',
                         render: function(data) {
-                            if (data === 1) {
+                            if (data == 1) {
                                 return `<span class="status status-success mt-2 fs-6">
                                             <span class="status-dot status-dot-animated"></span>
                                                 Active
