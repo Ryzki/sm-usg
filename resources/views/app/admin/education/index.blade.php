@@ -19,7 +19,7 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <h3 class="card-title">Data Materi</h3>
-                            <a href="{{ route('education.create') }}" type="button" class="btn btn-primary">
+                            <a href="{{ route('admin.education.create') }}" type="button" class="btn btn-primary">
                                 Tambah Materi
                             </a>
                         </div>
@@ -66,7 +66,7 @@
             $("#table-educations").dataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('education.index') }}",
+                ajax: "{{ route('admin.education.index') }}",
                 order: [
                     [4, 'desc']
                 ],

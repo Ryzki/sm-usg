@@ -100,16 +100,15 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/delete/{category_preeclamsia}', 'destroy')->name('preeclampsia.destroy');
             Route::post('/change_stat', 'changeStat')->name('preeclampsia.change_stat');
         });
-    });
-
-    Route::middleware('role:Admin,Bidan,Dokter')->prefix('/education')->controller(EducationController::class)->group(function () {
-        Route::get('/', 'index')->name('education.index');
-        Route::get('/create', 'create')->name('education.create');
-        Route::post('/store', 'store')->name('education.store');
-        Route::get('/{education}/edit', 'edit')->name('education.edit');
-        Route::put('/{education}', 'update')->name('education.update');
-        Route::delete('/{education}', 'delete')->name('education.delete');
-        Route::get('/checkSlug', 'checkSlug')->name('education.checkSlug');
+        Route::prefix('/education')->controller(EducationController::class)->group(function () {
+            Route::get('/', 'index')->name('education.index');
+            Route::get('/create', 'create')->name('education.create');
+            Route::post('/store', 'store')->name('education.store');
+            Route::get('/{education}/edit', 'edit')->name('education.edit');
+            Route::put('/{education}', 'update')->name('education.update');
+            Route::delete('/{education}', 'delete')->name('education.delete');
+            Route::get('/checkSlug', 'checkSlug')->name('education.checkSlug');
+        });
     });
 
     Route::get('/verification', [VerificationController::class, 'index'])->name('verification')->middleware('verified');

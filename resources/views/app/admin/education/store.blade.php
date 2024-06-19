@@ -101,7 +101,7 @@
                 formData.append('content', content);
 
                 $.ajax({
-                    url: "{{ route('education.store') }}",
+                    url: "{{ route('admin.education.store') }}",
                     type: "POST",
                     data: formData,
                     contentType: false,
