@@ -89,7 +89,7 @@ class VerificationController extends Controller
                     'subdistrict' => $request->input('sub_district'),
                     'district' => $request->input('district'),
                     'city' => $request->input('city'),
-                    'midwife_id' => Auth::user()->role_id === 1 ? $request->input('midwife') : null
+                    'midwife_id' => Auth::user()->role_id == 1 ? $request->input('midwife') : null
                 ];
 
                 $user = User::find($idUser);
