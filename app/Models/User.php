@@ -89,11 +89,11 @@ class User extends Authenticatable
         $nameParts = explode(" ", $this->full_name);
         $firstName = $nameParts[0];
 
-        if (strtolower($firstName) === "dr.") {
+        if (strtolower($firstName) == "dr.") {
             return "Dokter Umum";
-        } elseif (strtolower($firstName) === "drg.") {
+        } elseif (strtolower($firstName) == "drg.") {
             return "Dokter Gigi";
-        } elseif (strpos($this->full_name, "S.GZ") !== false) {
+        } elseif (strpos($this->full_name, "S.GZ") != false) {
             return "Petugas Gizi";
         } else {
             return null;

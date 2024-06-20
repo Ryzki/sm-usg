@@ -30,11 +30,6 @@
                         <div class="col-6">
                             <a href="{{ route('user.education.index') }}" class="btn btn-danger">Kembali</a>
                         </div>
-                        <div class="col-6 text-end">
-                            <button class="btn btn-primary" id="btnConfirm">
-                                Ya, Saya sudah paham
-                            </button>
-                        </div>
                     </div>
                 </div>
 
@@ -54,26 +49,6 @@
             const lightbox = GLightbox({
                 selector: '.glightbox'
             });
-
-            // $('#btnConfirm').on('click', function(e) {
-            //     e.preventDefault();
-            //     const slug = '{{ $education->slug }}';
-            //     const url = "{{ route('user.education.confirmTask', ':slug') }}".replace(':slug',
-            //         slug);
-            //     const data = {
-            //         'slug': '{{ $education->slug }}'
-            //     }
-
-            //     $.ajax({
-            //         url: url,
-            //         type: "POST",
-            //         data: data,
-            //         dataType: "JSON",
-            //         success: function(response) {
-            //             console.log(response);
-            //         }
-            //     });
-            // })
         });
     </script>
 @endpush
