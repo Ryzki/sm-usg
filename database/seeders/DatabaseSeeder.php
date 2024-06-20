@@ -23,141 +23,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // User::create([
-        //     'full_name' => 'Pramusita Ayu Nabila',
-        //     'email' => 'user@gmail.com',
-        //     'password' => Hash::make('password'),
-        //     'role_id' => 1,
-        // ]);
-
-        // User::create([
-        //     'full_name' => 'Aning',
-        //     'email' => 'bidan1@gmail.com',
-        //     'password' => Hash::make('password'),
-        //     'role_id' => 2,
-        // ]);
-
-        // User::create([
-        //     'full_name' => 'Nuari',
-        //     'email' => 'bidan2@gmail.com',
-        //     'password' => Hash::make('password'),
-        //     'role_id' => 2,
-        // ]);
-
-        // User::create([
-        //     'full_name' => 'Ana',
-        //     'email' => 'bidan3@gmail.com',
-        //     'password' => Hash::make('password'),
-        //     'role_id' => 2,
-        // ]);
-
-        // SubDistrict::create([
-        //     'name' => 'Rowosari'
-        // ]);
-
-        // SubDistrict::create([
-        //     'name' => 'Meteseh'
-        // ]);
-
-        // SubDistrict::create([
-        //     'name' => 'Mangunharjo'
-        // ]);
-
-        // Area::create([
-        //     'sub_district_id' => 1,
-        //     'residential_association' => 1
-        // ]);
-
-        // Area::create([
-        //     'sub_district_id' => 1,
-        //     'residential_association' => 2
-        // ]);
-
-        // Area::create([
-        //     'sub_district_id' => 1,
-        //     'residential_association' => 3
-        // ]);
-
-        // Area::create([
-        //     'sub_district_id' => 2,
-        //     'residential_association' => 1
-        // ]);
-
-        // Area::create([
-        //     'sub_district_id' => 2,
-        //     'residential_association' => 2
-        // ]);
-
-        // Area::create([
-        //     'sub_district_id' => 2,
-        //     'residential_association' => 3
-        // ]);
-
-        // Area::create([
-        //     'sub_district_id' => 3,
-        //     'residential_association' => 1
-        // ]);
-
-        // Area::create([
-        //     'sub_district_id' => 3,
-        //     'residential_association' => 2
-        // ]);
-
-        // Area::create([
-        //     'sub_district_id' => 3,
-        //     'residential_association' => 3
-        // ]);
-
-        // Bidan ANING index 2
-        // Bidan NUARI index 3
-        // Bidan ANA index 4
-
-        // MidwifeArea::create([
-        //     'midwife_id' => 2,
-        //     'area_id' => 1
-        // ]);
-
-        // MidwifeArea::create([
-        //     'midwife_id' => 4,
-        //     'area_id' => 2
-        // ]);
-
-        // MidwifeArea::create([
-        //     'midwife_id' => 2,
-        //     'area_id' => 3
-        // ]);
-
-        // MidwifeArea::create([
-        //     'midwife_id' => 3,
-        //     'area_id' => 4
-        // ]);
-
-        // MidwifeArea::create([
-        //     'midwife_id' => 3,
-        //     'area_id' => 5
-        // ]);
-
-        // MidwifeArea::create([
-        //     'midwife_id' => 4,
-        //     'area_id' => 6
-        // ]);
-
-        // MidwifeArea::create([
-        //     'midwife_id' => 3,
-        //     'area_id' => 7
-        // ]);
-
-        // MidwifeArea::create([
-        //     'midwife_id' => 3,
-        //     'area_id' => 8
-        // ]);
-
-        // MidwifeArea::create([
-        //     'midwife_id' => 4,
-        //     'area_id' => 9
-        // ]);
 
         Visit::create([
             'name' => 'Kunjungan 1',
@@ -277,19 +142,19 @@ class DatabaseSeeder extends Seeder
 
         Role::create([
             'name' => 'Ibu Hamil',
-            'verification_route' => 'user.verified',
+            'verification_route' => 'verification',
             'dashboard_route' => 'user.dashboard'
         ]);
 
         Role::create([
             'name' => 'Bidan',
-            'verification_route' => 'midwife.verified',
+            'verification_route' => 'verification',
             'dashboard_route' => 'midwife.dashboard'
         ]);
 
         Role::create([
             'name' => 'Dokter',
-            'verification_route' => 'doctor.verified',
+            'verification_route' => 'verification',
             'dashboard_route' => 'doctor.dashboard'
         ]);
 
