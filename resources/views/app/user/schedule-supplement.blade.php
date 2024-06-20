@@ -120,12 +120,10 @@
                                 // Proses data acara dari respons server
                                 var events = response.datas.map(function(event) {
                                     return {
-                                        title: event.status === 1 ? 'MINUM' :
-                                            'TERLEWAT',
+                                        title: event.status == 1 ? 'MINUM' : 'TERLEWAT',
                                         start: event.start_end,
                                         end: event.start_end,
-                                        color: event.status === 1 ? '#2FB344' :
-                                            '#D63939'
+                                        color: event.status == 1 ? '#2FB344' : '#D63939'
                                     };
                                 });
                                 // Panggil successCallback dengan data acara yang diterima

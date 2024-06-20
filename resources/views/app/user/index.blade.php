@@ -289,7 +289,7 @@
             </div>
             <div class="card p-3 mb-3">
                 <h5 class="card-title fw-bold">RIWAYAT MINUM TTD</h5>
-                @if (!isset($permissionBloodSupplement))
+                @if ($permissionBloodSupplement)
                     <div class="row mb-2">
                         <div class="card card-sm">
                             <div class="card-body">
@@ -308,15 +308,17 @@
                                         </span>
                                     </div>
                                     <div class="col">
-                                        <div class="font-weight-medium">
-                                            30x (Minum Obat Tambah Darah)
+                                        <div class="">
+                                            <span class="fw-bold">{{ $countBloodSupplement }} Kali</span> (Minum Obat
+                                            Tambah
+                                            Darah)
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row ">
+                    {{-- <div class="row ">
                         <div class="card card-sm">
                             <div class="card-body">
                                 <div class="row align-items-center">
@@ -341,7 +343,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 @else
                     <div class="alert alert-warning" role="alert">
                         <div class="d-flex">

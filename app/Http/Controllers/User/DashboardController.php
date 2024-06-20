@@ -11,6 +11,7 @@ use App\Models\ScheduleANC;
 use Illuminate\Http\Request;
 use App\Models\PregnancyHistory;
 use App\Http\Controllers\Controller;
+use App\Models\BloodSupplement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -52,6 +53,8 @@ class DashboardController extends Controller
             $gestationalAge = $usiaKehamilan['minggu'] . ' Minggu, ' . $usiaKehamilan['hari'] . ' Hari';
             $permissionBloodSupplement = $usiaKehamilan['minggu'] >= 16;
 
+            $countBloodSupplement = BloodSupplement::where('pregnant_mother_id', Auth::user()->id)->count();
+
             $pregnantHistoryFormatted = Carbon::createFromFormat('Y-m-d', $pregnantHistory->estimated_due_date)->translatedFormat('d F Y');
 
             return view('app.user.index', compact(
@@ -60,7 +63,8 @@ class DashboardController extends Controller
                 'gestationalAge',
                 'conditionUser',
                 'scheduleUser',
-                'permissionBloodSupplement'
+                'permissionBloodSupplement',
+                'countBloodSupplement'
             ));
         }
 
