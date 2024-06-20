@@ -72,7 +72,7 @@
             const slug = document.querySelector('#slug');
 
             title.addEventListener('change', function() {
-                fetch('/education/checkSlug?title=' + title.value)
+                fetch('/admin/education/checkSlug?title=' + title.value)
                     .then(response => response.json())
                     .then(data => slug.value = data.slug)
             });
