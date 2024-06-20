@@ -61,7 +61,7 @@ class AreaController extends Controller
     {
         $validated = Validator::make($request->only('subdistrict', 'RA'), [
             'subdistrict' => 'required|string',
-            'RA' => 'required|in:' . implode(',', SubDistrict::pluck('id')->toArray())
+            'RA' => 'required'
         ], [
             'subdistrict.required' => 'Nama Kelurahan harus diisi.',
             'RA.required' => 'RW harus diisi.'
