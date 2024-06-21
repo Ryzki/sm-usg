@@ -27,7 +27,7 @@ class VerificationController extends Controller
             'email' => 'required|email:dns',
             'place_of_birth' => 'required',
             'date_of_birth' => 'required',
-            'phone_number' => 'required|min:10|max:13|regex:/^08\d{10,12}$/',
+            'phone_number' => 'required|min:10|max:13|regex:/^08\d{8,11}$/',
             'home_address' => 'required',
             'NA' => 'required',
             'RA' => 'required',
