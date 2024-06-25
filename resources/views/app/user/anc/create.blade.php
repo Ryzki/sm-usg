@@ -202,7 +202,11 @@
                             <div class="card-body">
                                 <div class="mb-3">
                                     <label class="form-label">Foto USG</label>
-                                    <input type="file" class="form-control" name="usg_image" id="usg_image">
+                                    <input type="file" class="form-control @error('usg_image') is-invalid @enderror"
+                                        name="usg_image" id="usg_image">
+                                    @error('usg_image')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Priview Foto</label>
