@@ -78,17 +78,17 @@
                                     </td>
                                     <td class="text-secondary" data-label="Status Kesehatan">
                                         @if ($user->historyAncs && $user->latestHistoryAncs)
-                                            @if ($user->latestHistoryAncs->stat_skrining_preklampsia === 1)
+                                            @if ($user->latestHistoryAncs->stat_skrining_preklampsia == 1)
                                                 <span class="status status-success mt-2 fs-6">
                                                     <span class="status-dot status-dot-animated"></span>
                                                     {{ $user->latestHistoryAncs->stat_skrining_preklampsia_label }}
                                                 </span>
-                                            @elseif ($user->latestHistoryAncs->stat_skrining_preklampsia === 2)
+                                            @elseif ($user->latestHistoryAncs->stat_skrining_preklampsia == 2)
                                                 <span class="status status-warning mt-2 fs-6">
                                                     <span class="status-dot status-dot-animated"></span>
                                                     {{ $user->latestHistoryAncs->stat_skrining_preklampsia_label }}
                                                 </span>
-                                            @elseif ($user->latestHistoryAncs->stat_skrining_preklampsia === 3)
+                                            @elseif ($user->latestHistoryAncs->stat_skrining_preklampsia == 3)
                                                 <span class="status status-danger mt-2 fs-6">
                                                     <span class="status-dot status-dot-animated"></span>
                                                     {{ $user->latestHistoryAncs->stat_skrining_preklampsia_label }}
