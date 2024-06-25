@@ -93,7 +93,7 @@ class User extends Authenticatable
             return "Dokter Umum";
         } elseif (strtolower($firstName) == "drg.") {
             return "Dokter Gigi";
-        } elseif (strpos($this->full_name, "S.GZ") != false) {
+        } elseif (strpos($this->full_name, "S.Gz") != false) {
             return "Petugas Gizi";
         } else {
             return null;
