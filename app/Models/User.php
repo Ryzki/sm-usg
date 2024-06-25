@@ -68,7 +68,7 @@ class User extends Authenticatable
 
     public function getFullAdressAttribute()
     {
-        return $this->home_address . ' RT ' . $this->NA . ' RW ' . $this->NA . ', Kel. ' . $this->subdistrict . ', Kec. ' . $this->district . ', ' . $this->city;
+        return $this->home_address . ' RT ' . $this->NA . ' RW ' . $this->RA . ', Kel. ' . $this->subdistrict . ', Kec. ' . $this->district . ', ' . $this->city;
     }
 
     public function getFormattedPhoneAttribute()
