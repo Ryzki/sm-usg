@@ -145,10 +145,8 @@
                                     @if ($detailVisit->historyAncs->first()->fetal_position == 1)
                                         <strong>Posisi Kepala Di Bawah</strong>
                                     @elseif($detailVisit->historyAncs->first()->fetal_position == 2)
-                                        <strong>Posisi Posterior</strong>
-                                    @elseif($detailVisit->historyAncs->first()->fetal_position == 3)
                                         <strong>Posisi Melintang</strong>
-                                    @elseif($detailVisit->historyAncs->first()->fetal_position == 4)
+                                    @elseif($detailVisit->historyAncs->first()->fetal_position == 3)
                                         <strong>Posisi Sunsang</strong>
                                     @endif
                                 </div>

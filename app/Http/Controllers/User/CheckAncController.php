@@ -70,7 +70,7 @@ class CheckAncController extends Controller
             'diastolik' => 'required|required_with:sistolik',
             'hemoglobin_level' => 'required',
             'tetanus_toxoid' => 'required|in:0,1',
-            'fetal_position' => 'required|in:1,2,3,4',
+            'fetal_position' => 'required|in:1,2,3',
             'fetal_heartbeat' => 'required',
             'usg_image' => 'image|mimes:jpg,jpeg,png|max:2048',
             'note' => 'max:1000'

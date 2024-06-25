@@ -171,9 +171,8 @@
                                     id="fetal_position" name="fetal_position">
                                     <option selected>Pilih Posisi Janin</option>
                                     <option value="1">Posisi Kepala Di Bawah</option>
-                                    <option value="2">Posisi Posterior</option>
-                                    <option value="3">Posisi Melintang</option>
-                                    <option value="4">Posisi Sungsang</option>
+                                    <option value="2">Posisi Melintang</option>
+                                    <option value="3">Posisi Sungsang</option>
                                 </select>
                                 @error('fetal_position')
                                     <div class="invalid-feedback">{{ $message }}</div>
