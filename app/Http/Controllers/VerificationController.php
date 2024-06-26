@@ -53,7 +53,7 @@ class VerificationController extends Controller
             'RA.required' => 'RW harus diisi.',
             'district.required' => 'Kota/kabupaten harus diisi.',
             'city.required' => 'Kota harus diisi.',
-            'midwife.required' => 'Bidan harus diisi.'
+
         ];
 
         if (Auth::user()->role_id == 1) {
@@ -62,6 +62,7 @@ class VerificationController extends Controller
 
             $messages['sub_district.required'] = 'Kecamatan harus diisi.';
             $messages['sub_district.in'] = 'Kecamatan yang dipilih tidak valid';
+            $messages['midwife.required'] = 'Bidan harus diisi.';
         } else {
             $rules['sub_district'] = 'required';
             $messages['sub_district.required'] = 'Kecamatan harus diisi.';
