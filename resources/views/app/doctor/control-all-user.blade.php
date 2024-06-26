@@ -205,7 +205,7 @@
                                 <tr>
                                     <td> ` + schedule.visit.abbreviation + ` </td>
                                     <td> ` + formatDate(schedule.schedule_date) + ` </td>
-                                    <td>` + (schedule.status === 1 ?
+                                    <td>` + (schedule.status == 1 ?
                                     `<span class="badge bg-green text-green-fg">Sukses</span>` :
                                     `<span class="badge bg-primary text-green-fg">Menunggu</span>`
                                 ) + `</td>
