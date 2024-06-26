@@ -225,8 +225,12 @@
                                                             Bidan
                                                         </span>
                                                         <input type="hidden" id="midwife_id" name="midwife">
-                                                        <input type="text" class="form-control" id="midwife"
-                                                            readonly>
+                                                        <input type="text"
+                                                            class="form-control @error('midwife') is-invalid @enderror"
+                                                            id="midwife" readonly>
+                                                        @error('midwife')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                     <div id="alert-midwife-area">
 
