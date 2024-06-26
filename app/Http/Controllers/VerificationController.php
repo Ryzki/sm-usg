@@ -56,7 +56,7 @@ class VerificationController extends Controller
             'midwife.required' => 'Bidan harus diisi.'
         ];
 
-        if (Auth::user()->role_id === 1) {
+        if (Auth::user()->role_id == 1) {
             $rules['sub_district'] = ['required', Rule::in(SubDistrict::pluck('name')->toArray())];
             $rules['midwife'] = 'required';
 
