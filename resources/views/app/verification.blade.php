@@ -80,7 +80,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
-                                            <label class="form-label">Tempat Tanggal Lahir</label>
+                                            <label class="form-label">Tempat Lahir</label>
                                             <input type="text"
                                                 class="form-control @error('place_of_birth') is-invalid @enderror"
                                                 id="place_of_birth" name="place_of_birth"
